@@ -1,0 +1,127 @@
+body, html, #root {
+  background: #fff;
+}
+
+.ticket-purchase-container {
+  max-width: 1000px;
+  margin: 40px auto 0 auto;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 50px 40px 50px 40px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ticket-purchase-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2a4ad9;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.ticket-purchase-list {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 50px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.ticket-purchase-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.ticket-purchase-img {
+  width: 220px;
+  height: 240px;
+  background: #e6edff;
+  color: #6b1e17;
+  font-size: 1.4rem;
+  font-weight: 600;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.ticket-purchase-label {
+  font-size: 1.2rem;
+  color: #2a4ad9;
+  font-weight: 600;
+  text-align: center;
+}
+
+.ticket-purchase-desc {
+  color: #888;
+  font-size: 1.6rem;
+  text-align: center;
+  margin-top: 32px;
+}
+.ticket-purchase-proto {
+  color: #6b1a13;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+
+/* 대체 링크 섹션 */
+.ticket-purchase-alternative {
+  margin-top: 40px;
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.ticket-purchase-alternative-link {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.ticket-purchase-alternative-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .ticket-purchase-container {
+    max-width: 98vw;
+    padding: 40px 12vw 32px 12vw;
+  }
+  .ticket-purchase-list {
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+  }
+  .ticket-purchase-item {
+    width: 100%;
+    padding: 20px 0;
+  }
+  .ticket-purchase-img {
+    width: 100%;
+    min-width: 0;
+    height: 120px;
+    font-size: 1.4rem;
+  }
+  
+  .ticket-purchase-alternative {
+    margin-top: 30px;
+    padding-top: 15px;
+  }
+  
+  .ticket-purchase-alternative-link {
+    font-size: 1rem;
+  }
+}

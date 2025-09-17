@@ -1,0 +1,82 @@
+body, html, #root {
+  background: #fff;
+}
+
+.qr-code-container {
+  max-width: 800px;
+  margin: 60px auto 0 auto;
+  padding: 40px 20px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-code-card {
+  background: #e3f2fd;
+  border-radius: 20px;
+  padding: 60px 40px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.qr-code-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 30px 0;
+}
+
+.qr-code-instruction {
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0 0 40px 0;
+  line-height: 1.5;
+}
+
+.qr-code-camera-area {
+  background: #1e40af;
+  border-radius: 16px;
+  padding: 80px 40px;
+  margin: 0 auto;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-placeholder {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .qr-code-container {
+    padding: 20px 15px;
+  }
+  
+  .qr-code-card {
+    padding: 40px 20px;
+  }
+  
+  .qr-code-title {
+    font-size: 2rem;
+  }
+  
+  .qr-code-instruction {
+    font-size: 1.1rem;
+  }
+  
+  .qr-code-camera-area {
+    padding: 60px 20px;
+    min-height: 250px;
+  }
+  
+  .camera-placeholder {
+    font-size: 1.2rem;
+  }
+}
