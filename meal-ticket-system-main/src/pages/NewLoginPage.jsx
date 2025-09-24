@@ -20,7 +20,6 @@ function NewLoginPage() {
   const handleLogin = (e) => {
     e.preventDefault();
     // 나중에 DB 연결 시 여기서 사용자 타입을 확인하고 적절한 페이지로 리다이렉트
-    // 임시로 학생 로그인으로 처리
     navigate('/ticket-purchase');
   };
 
