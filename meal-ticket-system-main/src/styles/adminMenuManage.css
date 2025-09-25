@@ -3,7 +3,7 @@ body, html, #root {
 }
 
 .admin-menu-manage-container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 60px auto 0 auto;
   padding: 40px;
   min-height: 100vh;
@@ -28,99 +28,72 @@ body, html, #root {
 }
 
 .admin-menu-manage-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
   margin-bottom: 40px;
 }
 
-/* 메뉴 등록/수정 섹션 */
-.admin-menu-form-section {
-  background: #e6edff;
-  border-radius: 16px;
-  padding: 30px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.admin-menu-form-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #2a4ad9;
-  margin-bottom: 25px;
-  text-align: center;
-}
-
-.admin-menu-form {
+/* 버튼 그룹 */
+.admin-menu-button-group {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.admin-menu-form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.admin-menu-form-label {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #2a4ad9;
-}
-
-.admin-menu-form-input,
-.admin-menu-form-select {
-  padding: 12px 16px;
-  border: 2px solid #2a4ad9;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: #fff;
-  transition: border-color 0.3s ease;
-}
-
-.admin-menu-form-input:focus,
-.admin-menu-form-select:focus {
-  outline: none;
-  border-color: #1a3ac9;
-}
-
-.admin-menu-checkbox-group {
-  display: flex;
-  margin-top: 8px;
-}
-
-.admin-menu-checkbox-label {
-  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 8px;
-  font-size: 1rem;
-  color: #2a4ad9;
-  cursor: pointer;
+  margin-top: 30px;
+  position: relative;
 }
 
-.admin-menu-checkbox-label input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: #2a4ad9;
+.admin-menu-button-group::before {
+  content: '';
+  flex: 1;
+  order: 1;
 }
 
-.admin-menu-submit-btn {
+.admin-menu-button-group::after {
+  content: '';
+  flex: 1;
+  order: 3;
+}
+
+.admin-menu-add-btn {
   background: #2a4ad9;
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 14px 24px;
-  font-size: 1.2rem;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 10px;
+  box-shadow: 0 4px 12px rgba(42, 74, 217, 0.3);
 }
 
-.admin-menu-submit-btn:hover {
+.admin-menu-status-header .admin-menu-add-btn {
+  position: absolute;
+  right: 0;
+}
+
+.admin-menu-add-btn:hover {
   background: #1a3ac9;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(42, 74, 217, 0.3);
+  box-shadow: 0 6px 16px rgba(42, 74, 217, 0.4);
+}
+
+.admin-menu-confirm-btn {
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  order: 4;
+}
+
+.admin-menu-confirm-btn:hover {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
 }
 
 /* 메뉴 현황 섹션 */
@@ -131,12 +104,19 @@ body, html, #root {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
+.admin-menu-status-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px;
+  position: relative;
+}
+
 .admin-menu-status-title {
   font-size: 1.8rem;
   font-weight: 700;
   color: #2a4ad9;
-  margin-bottom: 25px;
-  text-align: center;
+  margin: 0;
 }
 
 .admin-menu-table-container {
@@ -187,6 +167,50 @@ body, html, #root {
   background: #ff3742;
 }
 
+/* 수정 버튼 */
+.admin-menu-edit-btn {
+  background: #e9f0ff;
+  color: #1a3ac9;
+  border: 2px solid #1a3ac9;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.admin-menu-edit-btn:hover {
+  background: #1a3ac9;
+  color: #fff;
+}
+
+/* visible 토글 버튼 */
+.admin-menu-toggle-btn {
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 60px;
+}
+
+.admin-menu-toggle-btn.visible {
+  background: #28a745;
+  color: #fff;
+}
+
+.admin-menu-toggle-btn.hidden {
+  background: #6c757d;
+  color: #fff;
+}
+
+.admin-menu-toggle-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
 .admin-menu-back-btn {
   background: #e6edff;
   color: #2a4ad9;
@@ -197,14 +221,14 @@ body, html, #root {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: block;
-  margin: 0 auto;
+  order: 0;
 }
 
 .admin-menu-back-btn:hover {
   background: #2a4ad9;
   color: #fff;
 }
+
 
 /* 모바일 반응형 */
 @media (max-width: 768px) {
@@ -220,20 +244,40 @@ body, html, #root {
     font-size: 1rem;
   }
   
-  .admin-menu-manage-content {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-  
-  .admin-menu-form-section,
   .admin-menu-status-section {
     padding: 20px;
   }
   
-  .admin-menu-form-title,
+  .admin-menu-status-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .admin-menu-status-header .admin-menu-add-btn {
+    position: static;
+  }
+  
   .admin-menu-status-title {
     font-size: 1.5rem;
+    margin: 0;
   }
+  
+  .admin-menu-button-group {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .admin-menu-add-btn,
+  .admin-menu-confirm-btn,
+  .admin-menu-back-btn {
+    width: 100%;
+    max-width: 200px;
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+  
   
   .admin-menu-table {
     font-size: 0.8rem;
