@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/newLoginPage.css';
+import googleLogo from '../assets/images/구글로고.png';
+import naverLogo from '../assets/images/네이버로고.png';
+import kakaoLogo from '../assets/images/카카오로고.png';
 
 function NewLoginPage() {
   const navigate = useNavigate();
@@ -88,8 +91,18 @@ function NewLoginPage() {
           </div>
 
           <div className="social-login">
-            <button className="social-btn google">구글</button>
-            <button className="social-btn naver">네이버</button>
+            <button className="social-btn google">
+              <img className="social-logo" alt="Google" src={googleLogo} />
+              <span className="social-text">Google로 시작하기</span>
+            </button>
+            <button className="social-btn naver">
+              <img className="social-logo" alt="Naver" src={naverLogo} />
+              <span className="social-text">Naver로 시작하기</span>
+            </button>
+            <button className="social-btn kakao">
+              <img className="social-logo" alt="Kakao" src={kakaoLogo} />
+              <span className="social-text">Kakao로 시작하기</span>
+            </button>
           </div>
 
           <div className="signup-link">
