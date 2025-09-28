@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import RestaurantHeader from '../components/RestaurantHeader';
+import CategoryTabs from '../components/CategoryTabs';
+import MenuGrid from '../components/MenuGrid';
+import OrderSummary from '../components/OrderSummary';
 import '../styles/kioskMenuPage.css';
 
 function KioskMenuPage() {
@@ -83,87 +87,31 @@ function KioskMenuPage() {
     navigate('/menu-detail');
   };
 
-  // 주문 요약(주문 내역 + 총 금액)
-  const totalAmount = order.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const totalQuantity = order.reduce((sum, item) => sum + item.quantity, 0);
-
   return (
     <>
       <Navbar />
       <div className="kiosk-menu-container">
-        <div className="kiosk-header">
-          <button className="kiosk-back-btn" onClick={handleBackToStores}>
-            <span className="kiosk-back-icon">←</span>
-            이전으로
-          </button>
-        </div>
+        <RestaurantHeader 
+          restaurantName={store.name}
+          onBackClick={handleBackToStores}
+        />
         
-        {/* 카테고리 탭 */}
-        <div className="kiosk-category-tabs">
-          {store.categories.map((category, index) => (
-            <button
-              key={index}
-              className={`kiosk-category-tab ${activeCategory === index ? 'active' : ''}`}
-              onClick={() => handleCategoryClick(index)}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
+        <CategoryTabs 
+          categories={store.categories}
+          activeCategory={activeCategory}
+          onCategoryClick={handleCategoryClick}
+        />
         
-        {/* 메뉴 콘텐츠 영역 */}
-        <div className="kiosk-menu-content">
-          <div className="kiosk-menu-grid">
-            {store.categories[activeCategory].menus.map((menu) => (
-              <div key={menu.id} className="kiosk-menu-item" onClick={() => handleMenuClick(menu)}>
-                <div className="kiosk-menu-image">
-                  {menu.imageUrl ? (
-                    <img src={menu.imageUrl} alt={menu.name} className="kiosk-menu-image-img" />
-                  ) : (
-                    <div className="kiosk-menu-image-placeholder">이미지</div>
-                  )}
-                </div>
-                <h3 className="kiosk-menu-name">{menu.name}</h3>
-                <div className="kiosk-menu-price">{menu.price.toLocaleString()}원</div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <MenuGrid 
+          menus={store.categories[activeCategory].menus}
+          onMenuClick={handleMenuClick}
+        />
 
-        {/* 주문 요약 */}
-        <div className="kiosk-order-summary">
-          <div className="order-summary-header">
-            <h2 className="summary-title">주문메뉴</h2>
-            <div className="summary-stats">
-              <span className="summary-quantity">수량 {totalQuantity}개</span>
-              <span className="summary-amount">금액 {totalAmount.toLocaleString()}원</span>
-            </div>
-          </div>
-          
-          <div className="summary-list">
-            {order.length === 0 ? (
-              <div className="empty-order">메뉴를 선택해주세요</div>
-            ) : (
-              order.map(item => (
-                <div key={item.id} className="summary-item">
-                  <span className="item-name">{item.name}</span>
-                  <span className="item-quantity">x{item.quantity}</span>
-                  <span className="item-price">{(item.price * item.quantity).toLocaleString()}원</span>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-
-        {/* 액션 바 */}
-        <div className="kiosk-action-bar">
-          <button className="kiosk-cancel-btn" onClick={handleCancelOrder}>
-            전체취소
-          </button>
-          <button className="kiosk-checkout-btn" onClick={handleCheckout}>
-            결제하기
-          </button>
-        </div>
+        <OrderSummary 
+          order={order}
+          onCancelOrder={handleCancelOrder}
+          onCheckout={handleCheckout}
+        />
         
         <div className="kiosk-instruction">
           메뉴를 확인하고 주문할 수 있는 화면으로 터치하여 선택합니다.
