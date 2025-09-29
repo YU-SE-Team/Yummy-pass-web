@@ -3,12 +3,12 @@ body, html, #root {
 }
 
 .payment-container {
-  max-width: 1400px;
-  margin: 100px auto 0 auto;
+  max-width: 1000px;
+  margin: 40px auto 0 auto;
   background: #fff;
-  border-radius: 24px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
-  padding: 80px 64px 64px 64px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 30px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,14 +17,14 @@ body, html, #root {
 .payment-header {
   width: 100%;
   text-align: center;
-  margin-bottom: 64px;
+  margin-bottom: 32px;
 }
 
 .payment-title {
   color: #222;
-  font-size: 2.8rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .payment-divider {
@@ -36,9 +36,9 @@ body, html, #root {
 
 .payment-layout {
   display: flex;
-  gap: 64px;
+  gap: 24px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1000px;
 }
 
 .payment-left {
@@ -50,30 +50,30 @@ body, html, #root {
 
 .payment-section {
   background: #f8f9fa;
-  border-radius: 16px;
-  padding: 32px;
+  border-radius: 12px;
+  padding: 20px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
 
 .section-title {
   color: #0070f3;
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .section-divider {
   width: 100%;
   height: 1px;
   background: #e9ecef;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .info-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 0;
+  padding: 10px 0;
   border-bottom: 1px solid #e9ecef;
 }
 
@@ -83,20 +83,31 @@ body, html, #root {
 
 .info-label {
   color: #666;
-  font-size: 1.4rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
 .info-value {
   color: #222;
-  font-size: 1.4rem;
+  font-size: 1rem;
   font-weight: 600;
+}
+
+/* 주문 아이템 스타일 */
+.order-item {
+  margin-bottom: 20px;
+}
+
+.order-divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 15px 0;
 }
 
 .payment-methods-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 10px;
 }
 
 .payment-method-btn {
@@ -104,8 +115,8 @@ body, html, #root {
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 16px 24px;
-  font-size: 1.4rem;
+  padding: 10px 16px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -129,43 +140,43 @@ body, html, #root {
   background: #fff3cd;
   border: 1px solid #ffeaa7;
   border-radius: 12px;
-  padding: 24px;
+  padding: 12px;
   color: #856404;
-  font-size: 1.4rem;
+  font-size: 1rem;
   line-height: 1.6;
   text-align: center;
 }
 
 .payment-right {
   flex: 1;
-  max-width: 400px;
+  max-width: 300px;
 }
 
 .payment-summary-box {
   background: #e9f0fc;
-  border-radius: 16px;
-  padding: 32px;
+  border-radius: 12px;
+  padding: 20px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
 
 .summary-title {
   color: #0070f3;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   text-align: center;
 }
 
 .summary-content {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .summary-item {
   color: #222;
-  font-size: 1.4rem;
+  font-size: 1rem;
   font-weight: 600;
   text-align: center;
 }
@@ -174,32 +185,32 @@ body, html, #root {
   width: 100%;
   height: 1px;
   background: #e9ecef;
-  margin: 24px 0;
+  margin: 12px 0;
 }
 
 .summary-total {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 
 .total-count {
   color: #222;
-  font-size: 1.6rem;
+  font-size: 1.1rem;
   font-weight: 700;
 }
 
 .total-amount {
   color: #222;
-  font-size: 2.4rem;
+  font-size: 1.6rem;
   font-weight: 700;
 }
 
 .summary-buttons {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .summary-purchase-btn {
@@ -207,8 +218,8 @@ body, html, #root {
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 16px 24px;
-  font-size: 1.4rem;
+  padding: 10px 16px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
@@ -222,8 +233,8 @@ body, html, #root {
   color: #0070f3;
   border: 1px solid #0070f3;
   border-radius: 8px;
-  padding: 16px 24px;
-  font-size: 1.4rem;
+  padding: 10px 16px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;

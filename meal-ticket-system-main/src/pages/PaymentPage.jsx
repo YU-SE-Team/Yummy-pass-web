@@ -6,18 +6,28 @@ function PaymentPage() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // 전달받은 메뉴와 매장 정보
-  const { menu, store } = location.state || {
-    menu: { id: 1, name: '돼지국밥', description: '진한 돼지고기 국물과 쫄깃한 면발', price: 6500 },
-    store: { name: '학생회관 식당' }
+  // 전달받은 주문 정보와 매장 정보
+  const { order, store, menu } = location.state || {
+    order: [{ id: 1, name: '돼지국밥', price: 6500, quantity: 1 }],
+    store: { name: '학생회관 식당' },
+    menu: { id: 1, name: '돼지국밥', price: 6500 }
   };
   
+  // 주문 총액 계산
+  const totalAmount = order ? 
+    order.reduce((sum, item) => sum + (item.price * item.quantity), 0) : 
+    menu.price;
+  
+  const totalItems = order ? 
+    order.reduce((sum, item) => sum + item.quantity, 0) : 
+    1;
+
   const handleBack = () => {
-    navigate('/menu-detail', { state: { menu, store } });
+    navigate('/kiosk');
   };
 
   const handlePurchase = () => {
-    navigate('/payment-complete', { state: { menu, store } });
+    navigate('/payment-complete', { state: { order, store, menu } });
   };
 
   return (
@@ -47,18 +57,46 @@ function PaymentPage() {
             <div className="payment-section">
               <h2 className="section-title">상품 정보</h2>
               <div className="section-divider"></div>
-              <div className="info-row">
-                <span className="info-label">이름</span>
-                <span className="info-value">{menu.name}</span>
-              </div>
-              <div className="info-row">
-                <span className="info-label">금액</span>
-                <span className="info-value">{menu.price.toLocaleString()}원</span>
-              </div>
-              <div className="info-row">
-                <span className="info-label">수령 위치</span>
-                <span className="info-value">{store.name} 00코너</span>
-              </div>
+              {order && order.length > 0 ? (
+                <>
+                  {order.map((item, index) => (
+                    <div key={index} className="order-item">
+                      <div className="info-row">
+                        <span className="info-label">메뉴</span>
+                        <span className="info-value">{item.name}</span>
+                      </div>
+                      <div className="info-row">
+                        <span className="info-label">수량</span>
+                        <span className="info-value">{item.quantity}개</span>
+                      </div>
+                      <div className="info-row">
+                        <span className="info-label">금액</span>
+                        <span className="info-value">{(item.price * item.quantity).toLocaleString()}원</span>
+                      </div>
+                      {index < order.length - 1 && <div className="order-divider"></div>}
+                    </div>
+                  ))}
+                  <div className="info-row">
+                    <span className="info-label">수령 위치</span>
+                    <span className="info-value">{store.name} 00코너</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="info-row">
+                    <span className="info-label">이름</span>
+                    <span className="info-value">{menu.name}</span>
+                  </div>
+                  <div className="info-row">
+                    <span className="info-label">금액</span>
+                    <span className="info-value">{menu.price.toLocaleString()}원</span>
+                  </div>
+                  <div className="info-row">
+                    <span className="info-label">수령 위치</span>
+                    <span className="info-value">{store.name} 00코너</span>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="payment-section">
@@ -86,8 +124,8 @@ function PaymentPage() {
               </div>
               <div className="summary-divider"></div>
               <div className="summary-total">
-                <span className="total-count">총 1건</span>
-                <span className="total-amount">{menu.price.toLocaleString()}원</span>
+                <span className="total-count">총 {totalItems}건</span>
+                <span className="total-amount">{totalAmount.toLocaleString()}원</span>
               </div>
               <div className="summary-buttons">
                 <button className="summary-purchase-btn" onClick={handlePurchase}>

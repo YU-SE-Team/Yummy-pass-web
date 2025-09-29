@@ -5,12 +5,15 @@ import RestaurantHeader from '../components/RestaurantHeader';
 import CategoryTabs from '../components/CategoryTabs';
 import MenuGrid from '../components/MenuGrid';
 import OrderSummary from '../components/OrderSummary';
+import MenuDetailModal from '../components/MenuDetailModal';
 import '../styles/kioskMenuPage.css';
 
 function KioskMenuPage() {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState(0);
   const [order, setOrder] = useState([]); // 주문 목록
+  const [selectedMenu, setSelectedMenu] = useState(null); // 선택된 메뉴
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   
   // 정적 데이터
   const store = {
@@ -56,9 +59,13 @@ function KioskMenuPage() {
   };
 
   const handleMenuClick = (menu) => {
-    // 메뉴 클릭 시 주문 목록에 추가 (수량 증가)
-    // 메뉴명을 기준으로 탐색
-    // 메뉴가 존재할 경우(existingItem), 수량(quantity) 증가
+    // 메뉴 클릭 시 모달 열기
+    setSelectedMenu(menu);
+    setIsModalOpen(true);
+  };
+
+  const handleAddToOrder = (menu) => {
+    // 메뉴를 주문 목록에 추가 (수량 증가)
     setOrder(prevOrder => {
       const existingItem = prevOrder.find(item => item.id === menu.id);
       if (existingItem) {
@@ -83,8 +90,21 @@ function KioskMenuPage() {
   };
 
   const handleCheckout = () => {
-    // 상세 메뉴 페이지로 이동
-    navigate('/menu-detail');
+    // 결제 페이지로 이동
+    navigate('/payment', { state: { order, store } });
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedMenu(null);
+  };
+
+  const handleModalPurchase = (menu, store) => {
+    // 모달에서 구매하기 클릭 시 주문 목록에 추가
+    handleAddToOrder(menu);
+    // 모달 닫기
+    setIsModalOpen(false);
+    setSelectedMenu(null);
   };
 
   return (
@@ -117,6 +137,18 @@ function KioskMenuPage() {
           메뉴를 확인하고 주문할 수 있는 화면으로 터치하여 선택합니다.
         </div>
       </div>
+
+      {/* 메뉴 상세 모달 */}
+      {selectedMenu && (
+        <MenuDetailModal
+          menu={selectedMenu}
+          store={store}
+          category={store.categories[activeCategory].name}
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+          onPurchase={handleModalPurchase}
+        />
+      )}
     </>
   );
 }
