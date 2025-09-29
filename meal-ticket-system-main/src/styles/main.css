@@ -43,9 +43,37 @@ html {
   align-items: center;
   justify-content: space-between;
   padding: 28px 60px 28px 60px;
-  background: #fff;
-  box-shadow: none;
   font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+  position: relative;
+  height: 115px;
+  width: 100%;
+  
+  /* 배경 그라디언트 */
+  background: linear-gradient(
+    180deg,
+    rgba(75, 90, 228, 0.4) 0%,
+    rgba(134, 147, 241, 0.4) 100%
+  );
+}
+
+.navbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-backdrop-filter: blur(90px) brightness(100%);
+  backdrop-filter: blur(90px) brightness(100%);
+  background: linear-gradient(
+    270deg,
+    rgba(255, 255, 255, 0) 8%,
+    rgba(0, 0, 0, 0.2) 20%,
+    rgba(22, 22, 22, 0.18) 31%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-blend-mode: overlay;
+  z-index: -1;
 }
 
 .navbar__site-name {
@@ -59,6 +87,12 @@ html {
 }
 .navbar__site-name:hover {
   color: #2a4ad9;
+}
+
+.navbar__logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
 }
 
 .navbar__menu {
@@ -94,8 +128,8 @@ html {
   font-size: 0.9rem;
   font-weight: 700;
   color: #222;
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid #ffffff;
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
@@ -187,4 +221,3 @@ html {
     align-self: flex-end;
   }
 }
-
