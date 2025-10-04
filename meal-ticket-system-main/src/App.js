@@ -4,7 +4,6 @@ import './styles/main.css';
 import Navbar from './components/Navbar';
 import NewLoginPage from './pages/NewLoginPage';
 import TicketPurchase from './pages/TicketPurchase';
-import MenuDetailPage from './pages/MenuDetailPage';
 import PaymentPage from './pages/PaymentPage';
 import PaymentCompletePage from './pages/PaymentCompletePage';
 import MyTicketPage from './pages/MyTicketPage';
@@ -21,7 +20,6 @@ function App() {
         <Routes>
           <Route path="/" element={<NewLoginPage />} />
           <Route path="/ticket-purchase" element={<TicketPurchase />} />
-          <Route path="/menu-detail" element={<MenuDetailPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/payment-complete" element={<PaymentCompletePage />} />
           <Route path="/my-ticket" element={<MyTicketPage />} />
