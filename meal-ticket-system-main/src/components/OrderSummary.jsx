@@ -6,11 +6,26 @@ import React from 'react';
  * @param {Array} props.order - 주문 목록
  * @param {Function} props.onCancelOrder - 전체 취소 핸들러
  * @param {Function} props.onCheckout - 결제하기 핸들러
+ * @param {Function} props.onQuantityChange - 수량 변경 핸들러
  */
-function OrderSummary({ order, onCancelOrder, onCheckout }) {
+function OrderSummary({ order, onCancelOrder, onCheckout, onQuantityChange }) {
   // 주문 요약 계산
   const totalAmount = order.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const totalQuantity = order.reduce((sum, item) => sum + item.quantity, 0);
+
+  // 수량 증가 핸들러
+  const handleIncreaseQuantity = (itemId) => {
+    if (onQuantityChange) {
+      onQuantityChange(itemId, 1);
+    }
+  };
+
+  // 수량 감소 핸들러
+  const handleDecreaseQuantity = (itemId) => {
+    if (onQuantityChange) {
+      onQuantityChange(itemId, -1);
+    }
+  };
 
   return (
     <>
@@ -31,7 +46,23 @@ function OrderSummary({ order, onCancelOrder, onCheckout }) {
             order.map(item => (
               <div key={item.id} className="summary-item">
                 <span className="item-name">{item.name}</span>
-                <span className="item-quantity">x{item.quantity}</span>
+                <div className="item-quantity-controls">
+                  <button 
+                    className="quantity-btn decrease-btn" 
+                    onClick={() => handleDecreaseQuantity(item.id)}
+                    aria-label="수량 감소"
+                  >
+                    -
+                  </button>
+                  <span className="item-quantity">{item.quantity}</span>
+                  <button 
+                    className="quantity-btn increase-btn" 
+                    onClick={() => handleIncreaseQuantity(item.id)}
+                    aria-label="수량 증가"
+                  >
+                    +
+                  </button>
+                </div>
                 <span className="item-price">{(item.price * item.quantity).toLocaleString()}원</span>
               </div>
             ))
