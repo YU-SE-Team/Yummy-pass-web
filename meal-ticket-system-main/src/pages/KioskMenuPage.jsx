@@ -6,6 +6,7 @@ import CategoryTabs from '../components/CategoryTabs';
 import MenuGrid from '../components/MenuGrid';
 import OrderSummary from '../components/OrderSummary';
 import MenuDetailModal from '../components/MenuDetailModal';
+import PopularMenuBanner from '../components/PopularMenuBanner';
 import '../styles/kioskMenuPage.css';
 
 function KioskMenuPage() {
@@ -122,6 +123,8 @@ function KioskMenuPage() {
           onCategoryClick={handleCategoryClick}
         />
         
+        <PopularMenuBanner />
+
         <MenuGrid 
           menus={store.categories[activeCategory].menus}
           onMenuClick={handleMenuClick}
