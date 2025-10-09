@@ -107,6 +107,25 @@ function KioskMenuPage() {
     setSelectedMenu(null);
   };
 
+  const handleQuantityChange = (itemId, change) => {
+    setOrder(prevOrder => {
+      const existingItem = prevOrder.find(item => item.id === itemId);
+      if (existingItem) {
+        const newQuantity = existingItem.quantity + change;
+        if (newQuantity <= 0) {
+          // 수량이 0 이하면 주문에서 제거
+          return prevOrder.filter(item => item.id !== itemId);
+        } else {
+          // 수량 업데이트
+          return prevOrder.map(item =>
+            item.id === itemId ? { ...item, quantity: newQuantity } : item
+          );
+        }
+      }
+      return prevOrder;
+    });
+  };
+
   return (
     <>
       <Navbar />
@@ -131,6 +150,7 @@ function KioskMenuPage() {
           order={order}
           onCancelOrder={handleCancelOrder}
           onCheckout={handleCheckout}
+          onQuantityChange={handleQuantityChange}
         />
         
         <div className="kiosk-instruction">
