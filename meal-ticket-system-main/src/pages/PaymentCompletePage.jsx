@@ -22,7 +22,8 @@ function PaymentCompletePage() {
           <h1 className="payment-complete-title">결제가 완료되었습니다.</h1>
           
           <div className="payment-complete-notice">
-            학식을 수령할 때는 식판을 들고 해당하는 코너에 방문해 QR을 보여주세요.
+            학식을 수령할 때는 식판을 들고<br />
+            해당하는 코너에 방문해 QR을 보여주세요.
           </div>
           
           <div className="payment-complete-buttons">

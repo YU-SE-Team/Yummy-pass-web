@@ -117,12 +117,12 @@ function PaymentPage() {
 
           <div className="payment-right">
             <div className="payment-summary-box">
-              <h2 className="summary-title">결제 금액</h2>
+              <h2 className="section-title">결제 금액</h2>
+              <div className="section-divider"></div>
               <div className="summary-content">
                 <div className="summary-item">구매 금액</div>
                 <div className="summary-item">관련 정보</div>
               </div>
-              <div className="summary-divider"></div>
               <div className="summary-total">
                 <span className="total-count">총 {totalItems}건</span>
                 <span className="total-amount">{totalAmount.toLocaleString()}원</span>

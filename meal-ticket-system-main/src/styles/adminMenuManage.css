@@ -17,7 +17,7 @@ body, html, #root {
 .admin-menu-manage-title {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #2a4ad9;
+  color: #1a1a1a;
   margin-bottom: 10px;
 }
 
@@ -53,7 +53,7 @@ body, html, #root {
 }
 
 .admin-menu-add-btn {
-  background: #2a4ad9;
+  background: #6b5ace;
   color: #fff;
   border: none;
   border-radius: 12px;
@@ -62,7 +62,7 @@ body, html, #root {
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(42, 74, 217, 0.3);
+  box-shadow: 0 4px 12px rgba(107, 90, 206, 0.3);
 }
 
 .admin-menu-status-header .admin-menu-add-btn {
@@ -71,9 +71,9 @@ body, html, #root {
 }
 
 .admin-menu-add-btn:hover {
-  background: #1a3ac9;
+  background: #5a4ab8;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(42, 74, 217, 0.4);
+  box-shadow: 0 6px 16px rgba(107, 90, 206, 0.4);
 }
 
 .admin-menu-confirm-btn {
@@ -115,7 +115,7 @@ body, html, #root {
 .admin-menu-status-title {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #2a4ad9;
+  color: #1a1a1a;
   margin: 0;
 }
 
@@ -133,7 +133,7 @@ body, html, #root {
 }
 
 .admin-menu-table th {
-  background: #2a4ad9;
+  background: #6b5ace;
   color: #fff;
   padding: 12px 8px;
   text-align: center;
@@ -169,9 +169,9 @@ body, html, #root {
 
 /* 수정 버튼 */
 .admin-menu-edit-btn {
-  background: #e9f0ff;
-  color: #1a3ac9;
-  border: 2px solid #1a3ac9;
+  background: #f3f1ff;
+  color: #5a4ab8;
+  border: 2px solid #6b5ace;
   border-radius: 4px;
   padding: 6px 10px;
   cursor: pointer;
@@ -180,7 +180,7 @@ body, html, #root {
 }
 
 .admin-menu-edit-btn:hover {
-  background: #1a3ac9;
+  background: #6b5ace;
   color: #fff;
 }
 
@@ -212,9 +212,9 @@ body, html, #root {
 }
 
 .admin-menu-back-btn {
-  background: #e6edff;
-  color: #2a4ad9;
-  border: 2px solid #2a4ad9;
+  background: #f3f1ff;
+  color: #6b5ace;
+  border: 2px solid #6b5ace;
   border-radius: 12px;
   padding: 12px 24px;
   font-size: 1.1rem;
@@ -225,7 +225,7 @@ body, html, #root {
 }
 
 .admin-menu-back-btn:hover {
-  background: #2a4ad9;
+  background: #6b5ace;
   color: #fff;
 }
 
