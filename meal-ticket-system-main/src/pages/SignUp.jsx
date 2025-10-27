@@ -14,6 +14,18 @@ function SignUp() {
     navigate('/');
   };
 
+  const handleSocialLogin = (provider) => {
+    // 실제 소셜 로그인 API가 여기에 들어갈 예정
+    // 지금은 전화번호 입력 페이지로 이동
+    navigate('/social-signup-phone', { 
+      state: { 
+        provider: provider,
+        name: provider === 'Google' ? '김구글' : 
+              provider === 'Naver' ? '이네이버' : '박카카오'
+      } 
+    });
+  };
+
   return (
     <div className="signup2-layout">
       <div className="signup2-left">
@@ -43,15 +55,15 @@ function SignUp() {
           </div>
 
           <div className="social-login">
-            <button className="social-btn google">
+            <button className="social-btn google" onClick={() => handleSocialLogin('Google')}>
               <img className="social-logo" alt="Google" src={googleLogo} />
               <span className="social-text">Google로 시작하기</span>
             </button>
-            <button className="social-btn naver">
+            <button className="social-btn naver" onClick={() => handleSocialLogin('Naver')}>
               <img className="social-logo" alt="Naver" src={naverLogo} />
               <span className="social-text">Naver로 시작하기</span>
             </button>
-            <button className="social-btn kakao">
+            <button className="social-btn kakao" onClick={() => handleSocialLogin('Kakao')}>
               <img className="social-logo" alt="Kakao" src={kakaoLogo} />
               <span className="social-text">Kakao로 시작하기</span>
             </button>

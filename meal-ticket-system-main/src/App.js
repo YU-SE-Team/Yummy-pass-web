@@ -11,6 +11,7 @@ import AdminPage from './pages/AdminPage';
 import AdminMenuManage from './pages/AdminMenuManage';
 import QRCodePage from './pages/QRCodePage';
 import SignUp from './pages/SignUp';
+import SocialSignUpPhone from './pages/SocialSignUpPhone';
 import KioskMenuPage from './pages/KioskMenuPage';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/admin-menu-manage" element={<AdminMenuManage />} />
           <Route path="/qr-code" element={<QRCodePage />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/social-signup-phone" element={<SocialSignUpPhone />} />
           <Route path="/kiosk" element={<KioskMenuPage />} />
         </Routes>
       </div>
