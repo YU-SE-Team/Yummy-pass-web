@@ -1,4 +1,4 @@
-/* 키오스크 메뉴 페이지 스타일 - 흰색/푸른 느낌 */
+/* 키오스크 메뉴 페이지 스타일 - 보라색 톤 */
 .kiosk-menu-container {
   max-width: 1000px;
   margin: 40px auto 0 auto;
@@ -12,12 +12,12 @@
 
 /* 헤더 */
 .kiosk-header {
-  background: #007bff;
+  background: #6b5ace;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0,123,255,0.2);
+  box-shadow: 0 2px 10px rgba(107, 90, 206, 0.2);
   border-radius: 15px 15px 0 0;
   margin: -30px -20px 20px -20px;
 }
@@ -33,7 +33,7 @@
 
 .kiosk-back-btn {
   background: #fff;
-  border: 2px solid #007bff;
+  border: 2px solid #6b5ace;
   padding: 8px 16px;
   border-radius: 8px;
   font-size: 1rem;
@@ -43,13 +43,13 @@
   align-items: center;
   gap: 6px;
   transition: all 0.3s ease;
-  color: #007bff;
+  color: #6b5ace;
 }
 
 .kiosk-back-btn:hover {
-  background: #e3f2fd;
+  background: #f3f1ff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0,123,255,0.2);
+  box-shadow: 0 4px 15px rgba(107, 90, 206, 0.2);
 }
 
 .kiosk-back-icon {
@@ -80,15 +80,15 @@
 }
 
 .kiosk-category-tab:hover {
-  background: #e9ecef;
-  border-color: #007bff;
+  background: #f3f1ff;
+  border-color: #6b5ace;
 }
 
 .kiosk-category-tab.active {
-  background: #007bff;
-  border-color: #007bff;
+  background: #6b5ace;
+  border-color: #6b5ace;
   color: #fff;
-  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(107, 90, 206, 0.3);
 }
 
 
@@ -119,9 +119,9 @@
 }
 
 .kiosk-menu-item:hover {
-  border-color: #007bff;
+  border-color: #6b5ace;
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.2);
+  box-shadow: 0 8px 25px rgba(107, 90, 206, 0.2);
 }
 
 .kiosk-menu-image {
@@ -160,7 +160,7 @@
 .kiosk-menu-price {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #007bff;
+  color: #333;
 }
 
 /* 주문 요약 */
@@ -169,7 +169,7 @@
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  border: 1px solid #e3f2fd;
+  border: 1px solid #f3f1ff;
   margin-bottom: 20px;
 }
 
@@ -179,7 +179,7 @@
   align-items: center;
   margin-bottom: 20px;
   padding-bottom: 15px;
-  border-bottom: 2px solid #e3f2fd;
+  border-bottom: 2px solid #f3f1ff;
 }
 
 .summary-title {
@@ -201,7 +201,7 @@
 }
 
 .summary-amount {
-  color: #007bff;
+  color: #333;
 }
 
 .summary-list {
@@ -244,10 +244,10 @@
 }
 
 .quantity-btn {
-  background: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
+  background: none;
+  color: #28a745;
+  border: 1px solid #28a745;
+  border-radius: 4px;
   width: 28px;
   height: 28px;
   display: flex;
@@ -256,27 +256,27 @@
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+  transition: all 0.2s ease;
 }
 
 .quantity-btn:hover {
-  background: #0056b3;
-  transform: scale(1.1);
-  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+  background: #28a745;
+  color: #fff;
+  transform: none;
 }
 
 .quantity-btn:active {
-  transform: scale(0.95);
+  transform: none;
 }
 
 .decrease-btn {
-  background: #dc3545;
+  color: #dc3545;
+  border-color: #dc3545;
 }
 
 .decrease-btn:hover {
-  background: #c82333;
-  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+  background: #dc3545;
+  color: #fff;
 }
 
 .item-quantity {
@@ -288,7 +288,7 @@
 }
 
 .item-price {
-  color: #007bff;
+  color: #333;
   font-weight: 600;
   min-width: 100px;
   text-align: right;
@@ -328,12 +328,12 @@
 }
 
 .kiosk-checkout-btn {
-  background: #007bff;
+  background: #6b5ace;
   color: #fff;
 }
 
 .kiosk-checkout-btn:hover {
-  background: #0056b3;
+  background: #5a4ab8;
   transform: translateY(-2px);
 }
 
@@ -574,4 +574,3 @@
     font-size: 0.9rem;
   }
 }
-

@@ -1,14 +1,12 @@
 body, html, #root {
-  background: #fff;
+  background: #fafafa;
+  min-height: 100vh;
 }
 
 .payment-complete-container {
-  max-width: 800px;
-  margin: 100px auto 0 auto;
-  background: #fff;
-  border-radius: 24px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
-  padding: 80px 64px 64px 64px;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 100px 20px 60px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,80 +18,84 @@ body, html, #root {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 48px;
+  gap: 40px;
 }
 
 .payment-complete-title {
-  color: #222;
-  font-size: 2.8rem;
+  color: #1a1a1a;
+  font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 32px;
+  margin-bottom: 0;
+  letter-spacing: -0.5px;
 }
 
 .payment-complete-notice {
-  background: #e9f0fc;
-  border-radius: 16px;
-  padding: 32px;
+  background: #fff;
+  padding: 32px 28px;
   color: #222;
-  font-size: 1.6rem;
-  line-height: 1.6;
-  text-align: center;
+  font-size: 1.3rem;
+  line-height: 1.8;
+  text-align: left;
   max-width: 600px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  width: 100%;
+  text-align: center;
 }
 
 .payment-complete-buttons {
   display: flex;
-  gap: 24px;
+  gap: 16px;
   justify-content: center;
-  margin-top: 32px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 500px;
 }
 
 .payment-complete-main-btn {
-  background: #0070f3;
+  background: #6b5ace;
   color: #fff;
   border: none;
-  border-radius: 12px;
+  border-radius: 4px;
   padding: 16px 32px;
-  font-size: 1.4rem;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
+  flex: 1;
 }
 .payment-complete-main-btn:hover {
-  background: #005bb5;
+  background: #5a4ab8;
 }
 
 .payment-complete-ticket-btn {
   background: #fff;
-  color: #0070f3;
-  border: 2px solid #0070f3;
-  border-radius: 12px;
-  padding: 16px 32px;
-  font-size: 1.4rem;
+  color: #6b5ace;
+  border: 2px solid #6b5ace;
+  border-radius: 4px;
+  padding: 14px 32px;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  flex: 1;
 }
 .payment-complete-ticket-btn:hover {
-  background: #0070f3;
+  background: #6b5ace;
   color: #fff;
 }
 
 @media (max-width: 900px) {
   .payment-complete-container {
-    max-width: 98vw;
-    padding: 40px 12vw 32px 12vw;
+    padding: 80px 16px 40px 16px;
   }
   .payment-complete-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
   .payment-complete-notice {
-    font-size: 1.4rem;
-    padding: 24px;
+    font-size: 1.1rem;
+    padding: 24px 20px;
   }
   .payment-complete-buttons {
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
   }
-} 
+}

@@ -1,135 +1,126 @@
-body, html, #root {
-  background: #fff;
+body, html {
+  background: #fafafa;
+  min-height: 100%;
+}
+
+#root {
+  background: #fafafa;
+  min-height: 100vh;
 }
 
 .ticket-purchase-container {
-  max-width: 1000px;
-  margin: 40px auto 0 auto;
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  padding: 50px 40px 50px 40px;
-  min-height: 500px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 20px 60px 20px;
 }
 
 .ticket-purchase-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  color: #000000;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
   text-align: center;
-  margin-bottom: 40px;
 }
 
 .ticket-purchase-list {
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 50px;
-  margin-bottom: 30px;
-  width: 100%;
+  flex-direction: column;
+  gap: 1px;
+  background: #e5e5e5;
+  border: 1px solid #e5e5e5;
+  margin-top: 40px;
 }
 
 .ticket-purchase-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  background: #fff;
+  padding: 28px 32px;
   cursor: pointer;
+  transition: background 0.2s ease;
+  gap: 24px;
+}
+
+.ticket-purchase-item:hover {
+  background: #f8f9fa;
 }
 
 .ticket-purchase-img {
-  width: 220px;
-  height: 240px;
-  border-radius: 16px;
-  margin-bottom: 20px;
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
   object-fit: cover;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+  flex-shrink: 0;
 }
 
 .ticket-purchase-label {
-  font-size: 1.2rem;
-  color: #000000;
+  font-size: 1.3rem;
+  color: #1a1a1a;
   font-weight: 600;
-  text-align: center;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.ticket-purchase-item:hover .ticket-purchase-img {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border: 2px solid #2a4ad9;
-}
-
-.ticket-purchase-item:hover .ticket-purchase-label {
-  color: #1e3ba3;
-  transform: scale(1.05);
 }
 
 .ticket-purchase-desc {
-  color: #888;
-  font-size: 1.6rem;
-  text-align: center;
-  margin-top: 32px;
+  color: #666;
+  font-size: 1.1rem;
+  margin-top: 48px;
+  line-height: 1.6;
 }
+
 .ticket-purchase-proto {
-  color: #6b1a13;
-  font-size: 1.6rem;
-  font-weight: 500;
+  color: #c62828;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
-
-/* 대체 링크 섹션 */
 .ticket-purchase-alternative {
-  margin-top: 40px;
-  text-align: center;
-  padding-top: 20px;
-  border-top: 1px solid #e0e0e0;
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e5e5;
+  padding-bottom: 60px;
 }
 
 .ticket-purchase-alternative-link {
-  color: #007bff;
+  color: #1a73e8;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  transition: color 0.3s ease;
 }
 
 .ticket-purchase-alternative-link:hover {
-  color: #0056b3;
   text-decoration: underline;
 }
 
 @media (max-width: 900px) {
   .ticket-purchase-container {
-    max-width: 98vw;
-    padding: 40px 12vw 32px 12vw;
+    padding: 30px 16px 40px 16px;
   }
-  .ticket-purchase-list {
-    flex-direction: column;
-    gap: 32px;
-    width: 100%;
+
+  .ticket-purchase-title {
+    font-size: 2rem;
   }
+
   .ticket-purchase-item {
-    width: 100%;
-    padding: 20px 0;
+    padding: 20px 16px;
+    gap: 16px;
   }
+
   .ticket-purchase-img {
-    width: 100%;
-    min-width: 0;
-    height: 120px;
-    font-size: 1.4rem;
+    width: 80px;
+    height: 80px;
   }
-  
-  .ticket-purchase-alternative {
-    margin-top: 30px;
-    padding-top: 15px;
+
+  .ticket-purchase-label {
+    font-size: 1.1rem;
   }
-  
-  .ticket-purchase-alternative-link {
+
+  .ticket-purchase-desc {
     font-size: 1rem;
+    margin-top: 32px;
+  }
+
+  .ticket-purchase-alternative {
+    margin-top: 40px;
+    padding-bottom: 40px;
   }
 }

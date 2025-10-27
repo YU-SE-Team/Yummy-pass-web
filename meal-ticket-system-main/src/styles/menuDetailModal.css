@@ -182,8 +182,8 @@
 
 .menu-detail-back-btn {
   background: white;
-  color: #3b82f6;
-  border: 2px solid #3b82f6;
+  color: #6b5ace;
+  border: 2px solid #6b5ace;
   padding: 12px 30px;
   border-radius: 25px;
   font-size: 1rem;
@@ -193,12 +193,12 @@
 }
 
 .menu-detail-back-btn:hover {
-  background: #3b82f6;
+  background: #6b5ace;
   color: white;
 }
 
 .menu-detail-purchase-btn {
-  background: #3b82f6;
+  background: #6b5ace;
   color: white;
   border: none;
   padding: 12px 30px;
@@ -210,7 +210,7 @@
 }
 
 .menu-detail-purchase-btn:hover {
-  background: #2563eb;
+  background: #5a4ab8;
 }
 
 /* 반응형 디자인 */

@@ -36,7 +36,7 @@
 .menu-modal-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #2a4ad9;
+  color: #6b5ace;
   margin: 0;
 }
 
@@ -77,7 +77,7 @@
 .menu-modal-form-label {
   font-size: 1rem;
   font-weight: 600;
-  color: #2a4ad9;
+  color: #6b5ace;
 }
 
 .menu-modal-form-input,
@@ -93,7 +93,7 @@
 .menu-modal-form-input:focus,
 .menu-modal-form-select:focus {
   outline: none;
-  border-color: #2a4ad9;
+  border-color: #6b5ace;
 }
 
 .menu-modal-checkbox-group {
@@ -106,14 +106,14 @@
   align-items: center;
   gap: 8px;
   font-size: 1rem;
-  color: #2a4ad9;
+  color: #6b5ace;
   cursor: pointer;
 }
 
 .menu-modal-checkbox-label input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  accent-color: #2a4ad9;
+  accent-color: #6b5ace;
 }
 
 /* 이미지 업로드 스타일 */
@@ -130,8 +130,8 @@
 .menu-modal-file-label {
   display: inline-block;
   background: #f8f9fa;
-  color: #2a4ad9;
-  border: 2px dashed #2a4ad9;
+  color: #6b5ace;
+  border: 2px dashed #6b5ace;
   border-radius: 8px;
   padding: 20px;
   text-align: center;
@@ -141,8 +141,8 @@
 }
 
 .menu-modal-file-label:hover {
-  background: #e3f2fd;
-  border-color: #1a3ac9;
+  background: #f3f1ff;
+  border-color: #5a4ab8;
 }
 
 .menu-modal-image-preview {
@@ -213,7 +213,7 @@
 
 .menu-modal-submit-btn {
   flex: 1;
-  background: #2a4ad9;
+  background: #6b5ace;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -225,7 +225,7 @@
 }
 
 .menu-modal-submit-btn:hover {
-  background: #1a3ac9;
+  background: #5a4ab8;
   transform: translateY(-1px);
 }
 
