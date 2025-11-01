@@ -4,10 +4,10 @@
   margin: 40px auto 0 auto;
   background: #fff;
   border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   padding: 30px 20px;
   min-height: 500px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 /* 헤더 */
@@ -91,7 +91,6 @@
   box-shadow: 0 4px 15px rgba(107, 90, 206, 0.3);
 }
 
-
 /* 메뉴 콘텐츠 */
 .kiosk-menu-content {
   padding: 20px;
@@ -115,7 +114,7 @@
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .kiosk-menu-item:hover {
@@ -168,7 +167,7 @@
   background: #fff;
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 1px solid #f3f1ff;
   margin-bottom: 20px;
 }
@@ -302,11 +301,12 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
 
-.kiosk-cancel-btn, .kiosk-checkout-btn {
+.kiosk-cancel-btn,
+.kiosk-checkout-btn {
   padding: 12px 30px;
   border: none;
   border-radius: 8px;
@@ -337,6 +337,12 @@
   transform: translateY(-2px);
 }
 
+.kiosk-checkout-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 /* 안내 문구 */
 .kiosk-instruction {
   text-align: center;
@@ -352,15 +358,15 @@
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 12px;
   }
-  
+
   .kiosk-menu-content {
     padding: 15px;
   }
-  
+
   .kiosk-order-summary {
     padding: 15px;
   }
-  
+
   .kiosk-action-bar {
     padding: 12px 15px;
   }
@@ -371,7 +377,7 @@
     margin: 20px auto 0 auto;
     padding: 20px 15px;
   }
-  
+
   .kiosk-header {
     padding: 8px 15px;
     margin: -20px -15px 15px -15px;
@@ -382,90 +388,90 @@
   .restaurant-name h1 {
     font-size: 1.2rem;
   }
-  
+
   .kiosk-back-btn {
     padding: 6px 12px;
     font-size: 0.9rem;
   }
-  
+
   .kiosk-category-tabs {
     padding: 10px 15px;
     flex-wrap: wrap;
     gap: 6px;
     justify-content: center;
   }
-  
+
   .kiosk-category-tab {
     padding: 8px 12px;
     font-size: 0.9rem;
     border-radius: 15px;
   }
-  
 
   .kiosk-menu-content {
     padding: 15px;
   }
-  
+
   .kiosk-menu-grid {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 10px;
   }
-  
+
   .kiosk-menu-item {
     padding: 12px;
   }
-  
+
   .kiosk-menu-image {
     height: 80px;
     margin-bottom: 8px;
   }
-  
+
   .kiosk-menu-name {
     font-size: 0.9rem;
     margin-bottom: 6px;
   }
-  
+
   .kiosk-menu-price {
     font-size: 1rem;
   }
-  
+
   .kiosk-order-summary {
     padding: 15px;
   }
-  
+
   .order-summary-header {
     flex-direction: column;
     gap: 6px;
     text-align: center;
     margin-bottom: 12px;
   }
-  
+
   .summary-title {
     font-size: 1.1rem;
   }
-  
+
   .summary-stats {
     gap: 12px;
     font-size: 0.9rem;
   }
-  
+
   .summary-list {
     min-height: 60px;
     max-height: 120px;
   }
-  
+
   .kiosk-action-bar {
     padding: 12px;
     flex-direction: column;
     gap: 8px;
   }
-  
-  .kiosk-cancel-btn, .kiosk-checkout-btn {
+
+  .kiosk-cancel-btn,
+  .kiosk-checkout-btn {
     width: 100%;
     padding: 10px;
     font-size: 0.9rem;
   }
-  
+
   .kiosk-instruction {
     padding: 8px 15px 15px;
     font-size: 0.7rem;
@@ -477,7 +483,7 @@
     margin: 15px auto 0 auto;
     padding: 15px 10px;
   }
-  
+
   .kiosk-header {
     padding: 6px 10px;
     margin: -15px -10px 10px -10px;
@@ -488,12 +494,12 @@
   .restaurant-name h1 {
     font-size: 1rem;
   }
-  
+
   .kiosk-back-btn {
     padding: 5px 10px;
     font-size: 0.8rem;
   }
-  
+
   .kiosk-category-tabs {
     padding: 8px 10px;
     justify-content: flex-start;
@@ -501,60 +507,60 @@
     padding-bottom: 8px;
     gap: 4px;
   }
-  
+
   .kiosk-category-tab {
     white-space: nowrap;
     flex-shrink: 0;
     padding: 6px 10px;
     font-size: 0.8rem;
   }
-  
 
   .kiosk-menu-content {
     padding: 10px;
   }
-  
+
   .kiosk-menu-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
-  
+
   .kiosk-menu-item {
     padding: 8px;
   }
-  
+
   .kiosk-menu-image {
     height: 60px;
     margin-bottom: 6px;
   }
-  
+
   .kiosk-menu-name {
     font-size: 0.8rem;
     margin-bottom: 4px;
   }
-  
+
   .kiosk-menu-price {
     font-size: 0.9rem;
   }
-  
+
   .kiosk-order-summary {
     padding: 10px;
   }
-  
+
   .summary-title {
     font-size: 1rem;
   }
-  
+
   .summary-stats {
     font-size: 0.8rem;
     gap: 8px;
   }
-  
+
   .kiosk-action-bar {
     padding: 8px;
   }
-  
-  .kiosk-cancel-btn, .kiosk-checkout-btn {
+
+  .kiosk-cancel-btn,
+  .kiosk-checkout-btn {
     padding: 8px;
     font-size: 0.8rem;
   }

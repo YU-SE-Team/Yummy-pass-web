@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 /**
  * 주문 요약 컴포넌트
@@ -10,7 +10,10 @@ import React from 'react';
  */
 function OrderSummary({ order, onCancelOrder, onCheckout, onQuantityChange }) {
   // 주문 요약 계산
-  const totalAmount = order.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const totalAmount = order.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
   const totalQuantity = order.reduce((sum, item) => sum + item.quantity, 0);
 
   // 수량 증가 핸들러
@@ -30,40 +33,44 @@ function OrderSummary({ order, onCancelOrder, onCheckout, onQuantityChange }) {
   return (
     <>
       {/* 주문 요약 */}
-      <div className="kiosk-order-summary">
-        <div className="order-summary-header">
-          <h2 className="summary-title">주문메뉴</h2>
-          <div className="summary-stats">
-            <span className="summary-quantity">수량 {totalQuantity}개</span>
-            <span className="summary-amount">금액 {totalAmount.toLocaleString()}원</span>
+      <div className='kiosk-order-summary'>
+        <div className='order-summary-header'>
+          <h2 className='summary-title'>주문메뉴</h2>
+          <div className='summary-stats'>
+            <span className='summary-quantity'>수량 {totalQuantity}개</span>
+            <span className='summary-amount'>
+              금액 {totalAmount.toLocaleString()}원
+            </span>
           </div>
         </div>
-        
-        <div className="summary-list">
+
+        <div className='summary-list'>
           {order.length === 0 ? (
-            <div className="empty-order">메뉴를 선택해주세요</div>
+            <div className='empty-order'>메뉴를 선택해주세요</div>
           ) : (
-            order.map(item => (
-              <div key={item.id} className="summary-item">
-                <span className="item-name">{item.name}</span>
-                <div className="item-quantity-controls">
-                  <button 
-                    className="quantity-btn decrease-btn" 
+            order.map((item) => (
+              <div key={item.id} className='summary-item'>
+                <span className='item-name'>{item.name}</span>
+                <div className='item-quantity-controls'>
+                  <button
+                    className='quantity-btn decrease-btn'
                     onClick={() => handleDecreaseQuantity(item.id)}
-                    aria-label="수량 감소"
+                    aria-label='수량 감소'
                   >
                     -
                   </button>
-                  <span className="item-quantity">{item.quantity}</span>
-                  <button 
-                    className="quantity-btn increase-btn" 
+                  <span className='item-quantity'>{item.quantity}</span>
+                  <button
+                    className='quantity-btn increase-btn'
                     onClick={() => handleIncreaseQuantity(item.id)}
-                    aria-label="수량 증가"
+                    aria-label='수량 증가'
                   >
                     +
                   </button>
                 </div>
-                <span className="item-price">{(item.price * item.quantity).toLocaleString()}원</span>
+                <span className='item-price'>
+                  {(item.price * item.quantity).toLocaleString()}원
+                </span>
               </div>
             ))
           )}
@@ -71,11 +78,15 @@ function OrderSummary({ order, onCancelOrder, onCheckout, onQuantityChange }) {
       </div>
 
       {/* 액션 바 */}
-      <div className="kiosk-action-bar">
-        <button className="kiosk-cancel-btn" onClick={onCancelOrder}>
+      <div className='kiosk-action-bar'>
+        <button className='kiosk-cancel-btn' onClick={onCancelOrder}>
           전체취소
         </button>
-        <button className="kiosk-checkout-btn" onClick={onCheckout}>
+        <button
+          className='kiosk-checkout-btn'
+          onClick={onCheckout}
+          disabled={order.length === 0}
+        >
           결제하기
         </button>
       </div>
