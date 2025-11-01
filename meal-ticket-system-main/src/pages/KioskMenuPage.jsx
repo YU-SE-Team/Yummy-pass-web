@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import RestaurantHeader from '../components/RestaurantHeader';
 import CategoryTabs from '../components/CategoryTabs';
@@ -11,11 +11,19 @@ import '../styles/kioskMenuPage.css';
 
 function KioskMenuPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeCategory, setActiveCategory] = useState(0);
   const [order, setOrder] = useState([]); // 주문 목록
   const [selectedMenu, setSelectedMenu] = useState(null); // 선택된 메뉴
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   
+  // PaymentPage에서 돌아올 때 주문 정보 복원
+  useEffect(() => {
+    if (location.state && location.state.order) {
+      setOrder(location.state.order);
+    }
+  }, [location.state]);
+
   // 정적 데이터
   const store = {
     id: 'student-hall',

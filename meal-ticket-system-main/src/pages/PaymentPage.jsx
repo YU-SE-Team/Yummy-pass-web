@@ -23,7 +23,7 @@ function PaymentPage() {
     1;
 
   const handleBack = () => {
-    navigate('/kiosk');
+    navigate('/kiosk', { state: { order, store } });
   };
 
   const handlePurchase = () => {
