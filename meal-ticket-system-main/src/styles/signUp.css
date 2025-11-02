@@ -1,27 +1,22 @@
 .signup2-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  width: 100%;
   background: #fff;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  padding: 2rem;
 }
 
 .signup2-left {
   flex: 1;
+  background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 32px;
-  width: 480px;
-  height: 520px;
-  max-width: 480px;
+  padding: 2rem;
 }
 
 .signup2-logo-image {
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 300px;
+  max-height: 300px;
   width: auto;
   height: auto;
   object-fit: contain;
@@ -29,11 +24,13 @@
 
 .signup2-right {
   flex: 1;
+  background-color: #ffffff;
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 40px;
+  padding: 2rem;
+  overflow-y: auto;
 }
 
 .signup2-right::before {
@@ -48,21 +45,17 @@
 }
 
 .signup2-form-container {
-  padding: 40px;
   width: 100%;
   max-width: 400px;
+  padding: 2rem;
   position: relative;
   z-index: 1;
+  min-height: fit-content;
 }
 
 .signup2-form-container::before {
   content: '';
-  background: linear-gradient(
-    90deg,
-    rgba(190, 196, 248, 1) 0%,
-    rgba(150, 160, 240, 1) 50%,
-    rgba(75, 90, 228, 1) 100%
-  );
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 50px;
   height: 100%;
   left: 0;
@@ -76,13 +69,7 @@
   content: '';
   -webkit-backdrop-filter: blur(60px) brightness(105%);
   backdrop-filter: blur(60px) brightness(105%);
-  background: linear-gradient(
-    270deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(0, 0, 0, 0.15) 40%,
-    rgba(22, 22, 22, 0.12) 70%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: rgba(255, 255, 255, 0.1);
   background-blend-mode: overlay;
   border-radius: 50px;
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.25);
