@@ -214,6 +214,7 @@
   color: #6c757d;
   font-size: 1.1rem;
   padding: 40px 0;
+  font-style: italic;
 }
 
 .summary-item {
@@ -348,6 +349,7 @@
   color: #6c757d;
   font-size: 0.8rem;
   padding: 10px 20px 20px;
+  font-style: italic;
 }
 
 /* 반응형 디자인 */

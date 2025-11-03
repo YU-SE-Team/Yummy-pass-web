@@ -30,8 +30,6 @@ body, html {
   background: #e5e5e5;
   border: 1px solid #e5e5e5;
   margin-top: 40px;
-  border-radius: 16px;
-  overflow: hidden;
 }
 
 .ticket-purchase-item {
@@ -46,16 +44,6 @@ body, html {
 
 .ticket-purchase-item:hover {
   background: #f8f9fa;
-}
-
-.ticket-purchase-item:first-child {
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-}
-
-.ticket-purchase-item:last-child {
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
 }
 
 .ticket-purchase-img {
