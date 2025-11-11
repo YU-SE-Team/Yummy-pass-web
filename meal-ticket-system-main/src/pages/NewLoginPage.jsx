@@ -4,6 +4,7 @@ import '../styles/newLoginPage.css';
 import googleLogo from '../assets/images/구글로고.png';
 import naverLogo from '../assets/images/네이버로고.png';
 import kakaoLogo from '../assets/images/카카오로고.png';
+import { API_BASE_URL } from '../api';
 
 function NewLoginPage() {
   const navigate = useNavigate();
@@ -11,6 +12,8 @@ function NewLoginPage() {
     id: '',
     password: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -18,14 +21,69 @@ function NewLoginPage() {
       ...prev,
       [name]: value
     }));
+    setError(''); // 입력 시 에러 메시지 초기화
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // 나중에 DB 연결 시 여기서 사용자 타입을 확인하고 적절한 페이지로 리다이렉트
-    navigate('/ticket-purchase');
-  };
+    setError('');
 
+    // 입력값 검증
+    if (!formData.id.trim()) {
+      setError('아이디를 입력해주세요.');
+      return;
+    }
+    if (!formData.password.trim()) {
+      setError('비밀번호를 입력해주세요.');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/signin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: formData.id,
+          userPW: formData.password
+        })
+      });
+
+      const data = await response.json();
+
+      // 로그인 성공
+      if (response.ok && data.accessToken) {
+        // Authorization 헤더에서 토큰 가져오기
+        const authHeader = response.headers.get('Authorization');
+        const token = authHeader || data.accessToken;
+        
+        // JWT 토큰 및 사용자 정보 저장
+        localStorage.setItem('accessToken', token);
+        localStorage.setItem('userId', formData.id);
+        localStorage.setItem('userName', data.name);
+        localStorage.setItem('userRole', data.role);
+
+        // 역할에 따라 페이지로 이동
+        if (data.role === 'ADMIN') {
+          navigate('/admin');
+        } else {
+          navigate('/ticket-purchase');
+        }
+      } else {
+        // 로그인 실패
+        // 서버에서 보내는 오류 메시지 출력
+        setError(data.name);
+      }
+    } catch (err) {
+      console.error('로그인 오류:', err);
+      setError('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleSignUp = () => {
     navigate('/sign-up');
@@ -69,6 +127,7 @@ function NewLoginPage() {
                 name="id"
                 value={formData.id}
                 onChange={handleInputChange}
+                disabled={isLoading}
               />
             </div>
             
@@ -80,10 +139,29 @@ function NewLoginPage() {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
+                disabled={isLoading}
               />
             </div>
+
+            {error && (
+              <div style={{ 
+                color: '#ff4444', 
+                fontSize: '14px', 
+                marginTop: '8px',
+                textAlign: 'center',
+                marginBottom: '8px'
+              }}>
+                {error}
+              </div>
+            )}
             
-            <button type="submit" className="login-btn">LOGIN</button>
+            <button 
+              type="submit" 
+              className="login-btn"
+              disabled={isLoading}
+            >
+              {isLoading ? '처리 중...' : 'LOGIN'}
+            </button>
           </form>
 
           <div className="divider">
