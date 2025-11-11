@@ -1,15 +1,63 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../styles/main.css';
 import logo from '../assets/images/로고.png';
+import { API_BASE_URL } from '../api';
 
 // 상단 네비게이션 바
 function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [userId, setUserId] = useState('');
 
-  const handleLogout = () => {
+  useEffect(() => {
+    // 컴포넌트 마운트 및 경로 변경 시 사용자 ID 업데이트
+    const storedUserId = localStorage.getItem('userId');
+    setUserId(storedUserId || '');
+  }, [location.pathname]);
+
+  const clearLocalStorage = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userRole');
+    setUserId('');
     navigate('/');
+  };
+
+  const handleLogout = async () => {
+    const token = localStorage.getItem('accessToken');
+    
+    // 토큰이 없으면 바로 정리하고 이동
+    if (!token) {
+      clearLocalStorage();
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const data = await response.json();
+      // 로그아웃 성공
+      if (response.ok) {
+        // 정리
+        clearLocalStorage();
+      } else {
+        // 토큰이 유효하지 않아도 정리
+        console.error('로그아웃 오류:', data);
+        clearLocalStorage();
+      }
+    } catch (err) {
+      // 네트워크 오류에도 정리
+      console.error('로그아웃 네트워크 오류:', err);
+      clearLocalStorage();
+    }
   };
 
   // 현재 경로가 해당 링크와 일치하는지 확인하는 함수
@@ -41,7 +89,18 @@ function Navbar() {
         <li><Link to="/admin" className={`navbar__menu-link ${isActive('admin') ? 'active' : ''}`}>관리자 페이지</Link></li>
         <li><Link to="/qr-code" className={`navbar__menu-link ${isActive('qr-code') ? 'active' : ''}`}>QR 처리</Link></li>
       </ul>
-      <button className="navbar__logout" onClick={handleLogout}>로그아웃</button>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {userId && (
+          <span style={{ 
+            fontSize: '14px', 
+            color: '#666',
+            fontWeight: '500'
+          }}>
+            {userId}
+          </span>
+        )}
+        <button className="navbar__logout" onClick={handleLogout}>로그아웃</button>
+      </div>
     </nav>
   );
 }
