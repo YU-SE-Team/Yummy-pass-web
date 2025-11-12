@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import MenuModal from '../components/MenuModal';
+import { API_BASE_URL } from '../api';
 import '../styles/adminMenuManage.css';
 
 function AdminMenuManage() {
@@ -9,39 +10,107 @@ function AdminMenuManage() {
   const location = useLocation();
   
   // 전달받은 매장 정보
-  const store = location.state?.store || { name: '학생회관 식당' };
+  const store = location.state?.store || { name: '중앙도서관' };
 
   // 모달 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMenu, setEditingMenu] = useState(null);
 
   // 메뉴 목록 상태
-  const [menuList, setMenuList] = useState([
-    { id: 1, name: '짜장볶음밥', visible: true, price: 5000, tickets: 65, category: '중식' },
-    { id: 2, name: '김치 볶음밥', visible: false, price: 5000, tickets: 20, category: '한식' },
-    { id: 3, name: '부대찌개 세트', visible: true, price: 6500, tickets: 500, category: '정식' }
-  ]);
+  const [menuList, setMenuList] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // 카테고리 옵션
-  const categories = ['한식', '중식', '일식', '정식', '분식'];
+  // 관리자 메뉴 조회 API 호출
+  const fetchAdminMenus = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/admin/menu`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const menuData = await response.json();
+      setMenuList(menuData);
+    } catch (error) {
+      console.error('관리자 메뉴 조회 실패:', error);
+      setError('메뉴를 불러오는데 실패했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 컴포넌트 마운트 시 메뉴 데이터 조회
+  useEffect(() => {
+    fetchAdminMenus();
+    fetchCategories();
+  }, []);
+
+  // 카테고리 조회 API 호출
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/admin/menu/categories/${store.id}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const categoryData = await response.json();
+      setCategories(categoryData);
+    } catch (error) {
+      console.error('카테고리 조회 실패:', error);
+      setCategories([]);
+    }
+  };
 
   // 메뉴 등록/수정 핸들러
-  const handleMenuSubmit = (menuData) => {
-    if (editingMenu) {
-      // 수정
-      setMenuList(prev => prev.map(menu => 
-        menu.id === editingMenu.id 
-          ? { ...menu, ...menuData, id: editingMenu.id, visible: menu.visible }
-          : menu
-      ));
-      setEditingMenu(null);
-    } else {
-      // 신규 등록
-      const newMenu = {
-        id: Date.now(),
-        ...menuData
-      };
-      setMenuList(prev => [...prev, newMenu]);
+  const handleMenuSubmit = async (menuData) => {
+    try {
+      if (editingMenu) {
+        // 수정 (나중에 PUT API 추가 시 구현)
+        setMenuList(prev => prev.map(menu => 
+          menu.id === editingMenu.id 
+            ? { ...menu, ...menuData, id: editingMenu.id, visible: menu.visible }
+            : menu
+        ));
+        setEditingMenu(null);
+      } else {
+        // 신규 등록 - API 호출
+        const formData = new FormData();
+        formData.append('req', JSON.stringify({
+          restaurantId: store.id,
+          name: menuData.menuName,
+          price: parseInt(menuData.price),
+          totalCount: parseInt(menuData.tickets),
+          category: menuData.category,
+          visible: true
+        }));
+        
+        if (menuData.image) {
+          formData.append('image', menuData.image);
+        }
+
+        const response = await fetch(`${API_BASE_URL}/api/admin/menu`, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const newMenu = await response.json();
+        
+        // 로컬 상태 업데이트
+        setMenuList(prev => [...prev, newMenu]);
+      }
+    } catch (error) {
+      console.error('메뉴 등록/수정 실패:', error);
+      alert('메뉴 등록에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
@@ -57,8 +126,27 @@ function AdminMenuManage() {
   };
 
   // 메뉴 삭제 핸들러
-  const handleDelete = (id) => {
-    setMenuList(prev => prev.filter(menu => menu.id !== id));
+  const handleDelete = async (id) => {
+    if (!window.confirm('정말로 이 메뉴를 삭제하시겠습니까?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/admin/menu/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // 성공 시 로컬 상태 업데이트
+      setMenuList(prev => prev.filter(menu => menu.id !== id));
+      alert('메뉴가 삭제되었습니다.');
+    } catch (error) {
+      console.error('메뉴 삭제 실패:', error);
+      alert('메뉴 삭제에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   // 메뉴 수정 핸들러
@@ -84,7 +172,7 @@ function AdminMenuManage() {
       <Navbar />
       <div className="admin-menu-manage-container">
         <div className="admin-menu-manage-header">
-          <h1 className="admin-menu-manage-title">{store.name} 학식메뉴 관리</h1>
+          <h1 className="admin-menu-manage-title">{store.name} 메뉴 관리</h1>
         </div>
 
         <div className="admin-menu-manage-content">
@@ -96,6 +184,11 @@ function AdminMenuManage() {
                 등록하기
               </button>
             </div>
+            
+            {/* 로딩/에러 상태 */}
+            {loading && <div className="admin-menu-loading">메뉴를 불러오는 중</div>}
+            {error && <div className="admin-menu-error">{error}</div>}
+            
             <div className="admin-menu-table-container">
               <table className="admin-menu-table">
                 <thead>
@@ -122,7 +215,7 @@ function AdminMenuManage() {
                         </button>
                       </td>
                       <td>{menu.price.toLocaleString()}</td>
-                      <td>{menu.tickets}</td>
+                      <td>{menu.soldTicket}</td>
                       <td>{menu.category}</td>
                       <td>
                         <button 
@@ -165,6 +258,7 @@ function AdminMenuManage() {
         onClose={handleCloseModal}
         onSubmit={handleMenuSubmit}
         initialData={editingMenu}
+        categories={categories}
       />
     </>
   );

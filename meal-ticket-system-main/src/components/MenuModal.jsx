@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/menuModal.css';
 
-function MenuModal({ isOpen, onClose, onSubmit, initialData = null }) {
+function MenuModal({ isOpen, onClose, onSubmit, initialData = null, categories = [] }) {
   // 폼 데이터 상태
   const [formData, setFormData] = useState({
     menuName: '',
@@ -13,9 +13,6 @@ function MenuModal({ isOpen, onClose, onSubmit, initialData = null }) {
 
   // 이미지 미리보기 상태
   const [imagePreview, setImagePreview] = useState(null);
-
-  // 카테고리 옵션
-  const categories = ['한식', '중식', '일식', '정식', '분식'];
 
   // 모달이 열릴 때 초기 데이터 설정
   useEffect(() => {

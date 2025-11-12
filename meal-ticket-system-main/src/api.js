@@ -1,3 +1,3 @@
 // API 베이스 URL 설정
-export const API_BASE_URL = '여기에 API 주소 입력';
+export const API_BASE_URL = 'http://35.188.203.232:8080';
 
