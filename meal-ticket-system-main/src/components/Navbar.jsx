@@ -9,11 +9,14 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [userId, setUserId] = useState('');
+  const [userRole, setUserRole] = useState('');
 
   useEffect(() => {
-    // 컴포넌트 마운트 및 경로 변경 시 사용자 ID 업데이트
+    // 컴포넌트 마운트 및 경로 변경 시 사용자 정보 업데이트
     const storedUserId = localStorage.getItem('userId');
+    const storedUserRole = localStorage.getItem('userRole');
     setUserId(storedUserId || '');
+    setUserRole(storedUserRole || '');
   }, [location.pathname]);
 
   const clearLocalStorage = () => {
@@ -22,6 +25,7 @@ function Navbar() {
     localStorage.removeItem('userName');
     localStorage.removeItem('userRole');
     setUserId('');
+    setUserRole('');
     navigate('/');
   };
 
@@ -78,16 +82,32 @@ function Navbar() {
     }
   };
 
+  // 역할별 메뉴 렌더링 함수
+  const renderMenuByRole = () => {
+    if (userRole === 'STUDENT') {
+      return (
+        <>
+          <li><Link to="/ticket-purchase" className={`navbar__menu-link ${isActive('ticket-purchase') ? 'active' : ''}`}>식권 구매</Link></li>
+          <li><Link to="/my-ticket" className={`navbar__menu-link ${isActive('my-ticket') ? 'active' : ''}`}>My 식권</Link></li>
+        </>
+      );
+    } else if (userRole === 'ADMIN') {
+      return (
+        <>
+          <li><Link to="/admin" className={`navbar__menu-link ${isActive('admin') ? 'active' : ''}`}>관리자 페이지</Link></li>
+          <li><Link to="/qr-code" className={`navbar__menu-link ${isActive('qr-code') ? 'active' : ''}`}>QR 처리</Link></li>
+        </>
+      );
+    }
+  };
+
   return (
     <nav className="navbar">
       <Link to="/ticket-purchase" className="navbar__site-name">
         <img src={logo} alt="Yummy Pass 로고" className="navbar__logo" />
       </Link>
       <ul className="navbar__menu">
-        <li><Link to="/ticket-purchase" className={`navbar__menu-link ${isActive('ticket-purchase') ? 'active' : ''}`}>식권 구매</Link></li>
-        <li><Link to="/my-ticket" className={`navbar__menu-link ${isActive('my-ticket') ? 'active' : ''}`}>My 식권</Link></li>
-        <li><Link to="/admin" className={`navbar__menu-link ${isActive('admin') ? 'active' : ''}`}>관리자 페이지</Link></li>
-        <li><Link to="/qr-code" className={`navbar__menu-link ${isActive('qr-code') ? 'active' : ''}`}>QR 처리</Link></li>
+        {renderMenuByRole()}
       </ul>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         {userId && (
