@@ -7,15 +7,48 @@ import MenuGrid from '../components/MenuGrid';
 import OrderSummary from '../components/OrderSummary';
 import MenuDetailModal from '../components/MenuDetailModal';
 import PopularMenuBanner from '../components/PopularMenuBanner';
+import { API_BASE_URL } from '../api';
 import '../styles/kioskMenuPage.css';
 
 function KioskMenuPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { store } = location.state || {};
+  
+  const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(0);
-  const [order, setOrder] = useState([]); // 주문 목록
-  const [selectedMenu, setSelectedMenu] = useState(null); // 선택된 메뉴
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+  const [menus, setMenus] = useState([]);
+  const [order, setOrder] = useState([]);
+  const [selectedMenu, setSelectedMenu] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [popularMenus, setPopularMenus] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  // 카테고리 이름 매핑 (백엔드 enum -> 프론트 표시용)
+  const categoryDisplayNames = {
+    'KOREAN': '한식',
+    'SPECIAL': '특식',
+    'PORK': '돈가스',
+    'A': 'A코너',
+    'C1': 'C1코너',
+    'C2': 'C2코너',
+    'D': 'D코너',
+    'SET': '세트'
+  };
+
+  // 한글 카테고리명 -> 영문 enum 매핑
+  const categoryToEnum = {
+    '한식': 'KOREAN',
+    '특식': 'SPECIAL',
+    '스페셜': 'SPECIAL',
+    '돈가스': 'PORK',      // "돈가스" 추가
+    'A코너': 'A',
+    'C1코너': 'C1',
+    'C2코너': 'C2',
+    'D코너': 'D',
+    '세트': 'SET'
+  };
   
   // PaymentPage에서 돌아올 때 주문 정보 복원
   useEffect(() => {
@@ -24,53 +57,142 @@ function KioskMenuPage() {
     }
   }, [location.state]);
 
-  // 정적 데이터
-  const store = {
-    id: 'student-hall',
-    name: '학생회관 식당',
-    categories: [
-      {
-        name: '한식',
-        menus: [
-          { id: 1, name: '된장찌개', price: 7500, imageUrl: null },
-          { id: 2, name: '김치찌개', price: 8000, imageUrl: null },
-          { id: 3, name: '순두부찌개', price: 8000, imageUrl: null },
-          { id: 4, name: '부대찌개', price: 8000, imageUrl: null },
-          { id: 5, name: '낙지덮밥', price: 8500, imageUrl: null },
-          { id: 6, name: '산채비빔밥', price: 8500, imageUrl: null }
-        ]
-      },
-      {
-        name: '양식',
-        menus: [
-          { id: 7, name: '스테이크', price: 12000, imageUrl: null },
-          { id: 8, name: '파스타', price: 9000, imageUrl: null },
-          { id: 9, name: '피자', price: 10000, imageUrl: null }
-        ]
-      },
-      {
-        name: '중식',
-        menus: [
-          { id: 10, name: '짜장면', price: 6000, imageUrl: null },
-          { id: 11, name: '짬뽕', price: 7000, imageUrl: null },
-          { id: 12, name: '탕수육', price: 15000, imageUrl: null }
-        ]
-      },
-      {
-        name: '음료',
-        menus: [
-          { id: 13, name: '콜라', price: 2000, imageUrl: null },
-          { id: 14, name: '사이다', price: 2000, imageUrl: null },
-          { id: 15, name: '커피', price: 3000, imageUrl: null }
-        ]
+  // 컴포넌트 마운트 시: 카테고리 목록 및 인기 메뉴 조회
+  useEffect(() => {
+    if (store && store.restaurantId) {
+      fetchCategoriesAndPopularMenus();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [store]);
+
+  // 카테고리 변경 시: 해당 카테고리의 메뉴 조회
+  useEffect(() => {
+    if (categories.length > 0 && store && store.restaurantId) {
+      const currentCategory = categories[activeCategory];
+      if (currentCategory) {
+        fetchMenusByCategory(store.restaurantId, currentCategory);
       }
-    ]
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeCategory, categories, store]);
+
+  // 카테고리 목록 및 인기 메뉴 조회
+  const fetchCategoriesAndPopularMenus = async () => {
+    setIsLoading(true);
+    setError('');
+
+    try {
+      // 카테고리 목록 조회
+      const categoriesResponse = await fetch(
+        `${API_BASE_URL}/api/admin/menu/categories/${store.restaurantId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+
+      if (categoriesResponse.ok) {
+        const categoriesData = await categoriesResponse.json();
+        // 한글 카테고리명을 영문 enum으로 변환
+        const enumCategories = categoriesData.map(cat => categoryToEnum[cat] || cat);
+        setCategories(enumCategories);
+        
+        // 첫 번째 카테고리의 메뉴 자동 로드
+        if (enumCategories.length > 0) {
+          await fetchMenusByCategory(store.restaurantId, enumCategories[0]);
+        }
+      }
+
+      // 인기 메뉴 조회
+      const popularResponse = await fetch(
+        `${API_BASE_URL}/api/menus/sales-snapshots/restaurant/${store.restaurantId}/popular-menus`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+
+      if (popularResponse.ok) {
+        const popularData = await popularResponse.json();
+        setPopularMenus(popularData.menuNames || []);
+      }
+
+    } catch (err) {
+      console.error('카테고리 조회 오류:', err);
+      setError('메뉴 정보를 불러오는데 실패했습니다.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleMenuClick = (menu) => {
-    // 메뉴 클릭 시 모달 열기
-    setSelectedMenu(menu);
-    setIsModalOpen(true);
+  // 특정 카테고리의 메뉴 목록 조회
+  const fetchMenusByCategory = async (restaurantId, category) => {
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/api/menus/${restaurantId}/${category}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const formattedMenus = data.map(menu => ({
+          id: menu.id,
+          name: menu.name,
+          imageUrl: menu.photoUrl,
+          price: menu.price
+        }));
+        
+        setMenus(formattedMenus);
+      } else if (response.status === 404) {
+        setMenus([]);
+      } else {
+        setError('메뉴를 불러오는데 실패했습니다.');
+      }
+    } catch (err) {
+      console.error('메뉴 조회 오류:', err);
+      setError('네트워크 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleMenuClick = async (menu) => {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/api/menus/${menu.id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+
+      if (response.ok) {
+        const detailData = await response.json();
+        setSelectedMenu({
+          ...menu,
+          remainingTickets: detailData.remainingTickets
+        });
+        setIsModalOpen(true);
+      }
+    } catch (err) {
+      console.error('메뉴 상세 조회 오류:', err);
+      setSelectedMenu(menu);
+      setIsModalOpen(true);
+    }
   };
 
   const handleAddToOrder = (menu) => {
@@ -135,25 +257,65 @@ function KioskMenuPage() {
     });
   };
 
+  // 로딩 중 UI
+  if (isLoading && menus.length === 0) {
+    return (
+      <>
+        <Navbar />
+        <div className="kiosk-menu-container">
+          <RestaurantHeader 
+            restaurantName={store?.name || '식당'}
+            onBackClick={handleBackToStores}
+          />
+          <div style={{ textAlign: 'center', padding: '50px', color: '#666' }}>
+            로딩 중...
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // 에러 UI
+  if (error) {
+    return (
+      <>
+        <Navbar />
+        <div className="kiosk-menu-container">
+          <RestaurantHeader 
+            restaurantName={store?.name || '식당'}
+            onBackClick={handleBackToStores}
+          />
+          <div style={{ textAlign: 'center', padding: '50px', color: '#ff4444' }}>
+            {error}
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <Navbar />
       <div className="kiosk-menu-container">
         <RestaurantHeader 
-          restaurantName={store.name}
+          restaurantName={store?.name || '식당'}
           onBackClick={handleBackToStores}
         />
         
         <CategoryTabs 
-          categories={store.categories}
+          categories={categories.map(cat => ({
+            name: categoryDisplayNames[cat] || cat
+          }))}
           activeCategory={activeCategory}
           onCategoryClick={handleCategoryClick}
         />
         
-        <PopularMenuBanner />
+        {popularMenus.length > 0 && (
+          <PopularMenuBanner menuNames={popularMenus} />
+        )}
 
         <MenuGrid 
-          menus={store.categories[activeCategory].menus}
+          menus={menus}
           onMenuClick={handleMenuClick}
         />
 
@@ -174,7 +336,7 @@ function KioskMenuPage() {
         <MenuDetailModal
           menu={selectedMenu}
           store={store}
-          category={store.categories[activeCategory].name}
+          category={categoryDisplayNames[categories[activeCategory]] || categories[activeCategory]}
           isOpen={isModalOpen}
           onClose={handleModalClose}
           onPurchase={handleModalPurchase}
