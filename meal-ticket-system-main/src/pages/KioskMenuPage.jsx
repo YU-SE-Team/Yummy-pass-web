@@ -29,11 +29,11 @@ function KioskMenuPage() {
     'KOREAN': '한식',
     'SPECIAL': '특식',
     'PORK': '돈가스',
-    'A': 'A코너',
-    'C1': 'C1코너',
-    'C2': 'C2코너',
-    'D': 'D코너',
-    'SET': '세트'
+    'A': 'A',
+    'C1': 'C1',
+    'C2': 'C2',
+    'D': 'D',
+    'SET': '정식'
   };
 
   const categoryToEnum = {
@@ -41,11 +41,11 @@ function KioskMenuPage() {
     '특식': 'SPECIAL',
     '스페셜': 'SPECIAL',
     '돈가스': 'PORK', 
-    'A코너': 'A',
-    'C1코너': 'C1',
-    'C2코너': 'C2',
-    'D코너': 'D',
-    '세트': 'SET'
+    'A': 'A',
+    'C1': 'C1',
+    'C2': 'C2',
+    'D': 'D',
+    '정식': 'SET'
   };
   
   //정보 복원
@@ -125,7 +125,7 @@ function KioskMenuPage() {
     }
   };
 
-  // 특정 카테고리의 메뉴 목록 조회
+  //특정 카테고리
   const fetchMenusByCategory = async (restaurantId, category) => {
     setIsLoading(true);
     setError('');
@@ -192,7 +192,7 @@ function KioskMenuPage() {
   };
 
   const handleAddToOrder = (menu) => {
-    // 메뉴를 주문 목록에 추가 (수량 증가)
+    //메뉴 추가
     setOrder(prevOrder => {
       const existingItem = prevOrder.find(item => item.id === menu.id);
       if (existingItem) {
@@ -217,7 +217,7 @@ function KioskMenuPage() {
   };
 
   const handleCheckout = () => {
-    // 결제 페이지로 이동
+    //결제 페이지로 이동
     const currentCategoryEnum = categories[activeCategory];
     const categoryName = categoryDisplayNames[currentCategoryEnum] || currentCategoryEnum || '일반';
     navigate('/payment', { state: { order, store, categoryName } });
@@ -240,10 +240,10 @@ function KioskMenuPage() {
       if (existingItem) {
         const newQuantity = existingItem.quantity + change;
         if (newQuantity <= 0) {
-          // 수량이 0 이하면 주문에서 제거
+          //수량 0이하면 주문에서 제거
           return prevOrder.filter(item => item.id !== itemId);
         } else {
-          // 수량 업데이트
+          //수량 업데이트
           return prevOrder.map(item =>
             item.id === itemId ? { ...item, quantity: newQuantity } : item
           );
