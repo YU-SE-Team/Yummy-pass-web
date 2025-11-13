@@ -5,11 +5,6 @@ import '../styles/myTicketPage.css';
 function MyTicketPage() {
   const [activeTab, setActiveTab] = useState(0); // 0: 미사용, 1: 만료
 
-  const categories = useMemo(() => ([
-    { key: 'unused', name: '미사용 식권' },
-    { key: 'expired', name: '만료된 식권' }
-  ]), []);
-
   // 정적 데이터 (서버 연동 시 API로 대체)
   const tickets = useMemo(() => ([
     {
@@ -50,29 +45,32 @@ function MyTicketPage() {
     <>
       <Navbar />
       <div className="my-ticket-container">
-        <div className="my-ticket-grid">
-          <aside className="my-ticket-sidebar">
-            <h2 className="sidebar-title">MY식권</h2>
-            {categories.map((c, idx) => (
-              <button
-                key={c.key}
-                className={`sidebar-tab ${activeTab === idx ? 'active' : ''}`}
-                onClick={() => setActiveTab(idx)}
-              >
-                {c.name} <span className="sidebar-arrow">{activeTab === idx ? '▶' : '▷'}</span>
-              </button>
-            ))}
-          </aside>
+        <h1 className="my-ticket-title">MY식권</h1>
+        
+        {/* 캡슐 탭 버튼 */}
+        <div className="ticket-tab-container">
+          <div className={`ticket-tab-slider ${activeTab === 1 ? 'active-1' : ''}`}>
+            <button
+              className={`ticket-tab-btn ${activeTab === 0 ? 'active' : ''}`}
+              onClick={() => setActiveTab(0)}
+            >
+              미사용 식권
+            </button>
+            <button
+              className={`ticket-tab-btn ${activeTab === 1 ? 'active' : ''}`}
+              onClick={() => setActiveTab(1)}
+            >
+              만료된 식권
+            </button>
+          </div>
+        </div>
 
-          <main className="my-ticket-main">
-            <div className="my-ticket-main-inner">
-              <h1 className="my-ticket-hero">MY식권</h1>
-              
-              <div className="ticket-list">
-                {!Array.isArray(filtered) || filtered.length === 0 ? (
-                  <div className="no-ticket-message">식권이 없습니다.</div>
-                  ) : (
-                  filtered.map((t) => {
+        {/* 티켓 리스트 */}
+        <div className="ticket-list">
+          {!Array.isArray(filtered) || filtered.length === 0 ? (
+            <div className="no-ticket-message">식권이 없습니다.</div>
+          ) : (
+            filtered.map((t) => {
                     const expired = t.status !== 'UNUSED';
                     return (
                       <div key={t.id} className="ticket-item">
@@ -103,11 +101,8 @@ function MyTicketPage() {
                         </div>
                       </div>
                     );
-                  })
-                )}
-              </div>
-            </div>
-          </main>
+            })
+          )}
         </div>
       </div>
     </>
