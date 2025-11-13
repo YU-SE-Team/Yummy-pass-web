@@ -25,7 +25,6 @@ function KioskMenuPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // 카테고리 이름 매핑 (백엔드 enum -> 프론트 표시용)
   const categoryDisplayNames = {
     'KOREAN': '한식',
     'SPECIAL': '특식',
@@ -37,12 +36,11 @@ function KioskMenuPage() {
     'SET': '세트'
   };
 
-  // 한글 카테고리명 -> 영문 enum 매핑
   const categoryToEnum = {
     '한식': 'KOREAN',
     '특식': 'SPECIAL',
     '스페셜': 'SPECIAL',
-    '돈가스': 'PORK',      // "돈가스" 추가
+    '돈가스': 'PORK', 
     'A코너': 'A',
     'C1코너': 'C1',
     'C2코너': 'C2',
@@ -50,22 +48,21 @@ function KioskMenuPage() {
     '세트': 'SET'
   };
   
-  // PaymentPage에서 돌아올 때 주문 정보 복원
+  //정보 복원
   useEffect(() => {
     if (location.state && location.state.order) {
       setOrder(location.state.order);
     }
   }, [location.state]);
 
-  // 컴포넌트 마운트 시: 카테고리 목록 및 인기 메뉴 조회
+  //메뉴 조회
   useEffect(() => {
     if (store && store.restaurantId) {
       fetchCategoriesAndPopularMenus();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store]);
 
-  // 카테고리 변경 시: 해당 카테고리의 메뉴 조회
+  //카테고리 변경
   useEffect(() => {
     if (categories.length > 0 && store && store.restaurantId) {
       const currentCategory = categories[activeCategory];
@@ -95,11 +92,10 @@ function KioskMenuPage() {
 
       if (categoriesResponse.ok) {
         const categoriesData = await categoriesResponse.json();
-        // 한글 카테고리명을 영문 enum으로 변환
+        //한글 카테고리명을 영문 enum으로 변환
         const enumCategories = categoriesData.map(cat => categoryToEnum[cat] || cat);
         setCategories(enumCategories);
         
-        // 첫 번째 카테고리의 메뉴 자동 로드
         if (enumCategories.length > 0) {
           await fetchMenusByCategory(store.restaurantId, enumCategories[0]);
         }
@@ -222,7 +218,9 @@ function KioskMenuPage() {
 
   const handleCheckout = () => {
     // 결제 페이지로 이동
-    navigate('/payment', { state: { order, store } });
+    const currentCategoryEnum = categories[activeCategory];
+    const categoryName = categoryDisplayNames[currentCategoryEnum] || currentCategoryEnum || '일반';
+    navigate('/payment', { state: { order, store, categoryName } });
   };
 
   const handleModalClose = () => {
@@ -231,9 +229,7 @@ function KioskMenuPage() {
   };
 
   const handleModalPurchase = (menu, store) => {
-    // 모달에서 구매하기 클릭 시 주문 목록에 추가
     handleAddToOrder(menu);
-    // 모달 닫기
     setIsModalOpen(false);
     setSelectedMenu(null);
   };
@@ -257,7 +253,6 @@ function KioskMenuPage() {
     });
   };
 
-  // 로딩 중 UI
   if (isLoading && menus.length === 0) {
     return (
       <>
@@ -275,7 +270,7 @@ function KioskMenuPage() {
     );
   }
 
-  // 에러 UI
+  //에러
   if (error) {
     return (
       <>
