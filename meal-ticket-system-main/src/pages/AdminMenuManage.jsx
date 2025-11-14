@@ -81,15 +81,12 @@ function AdminMenuManage() {
       } else {
         // 신규 등록 - API 호출
         const formData = new FormData();
-        formData.append('req', JSON.stringify({
-          restaurantId: store.id,
-          name: menuData.menuName,
-          price: parseInt(menuData.price),
-          totalCount: parseInt(menuData.tickets),
-          category: menuData.category,
-          visible: true
-        }));
-        
+        formData.append("restaurantId", store.id);
+        formData.append("name", menuData.menuName);
+        formData.append("price", menuData.price);
+        formData.append("totalCount", menuData.tickets);
+        formData.append("category", menuData.category);
+        formData.append("visible", true);
         if (menuData.image) {
           formData.append('image', menuData.image);
         }
