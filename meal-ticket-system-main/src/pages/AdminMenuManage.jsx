@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import MenuModal from '../components/MenuModal';
+import MenuViewModal from '../components/MenuViewModal';
 import { API_BASE_URL } from '../api';
 import '../styles/adminMenuManage.css';
 
@@ -15,6 +16,10 @@ function AdminMenuManage() {
   // 모달 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMenu, setEditingMenu] = useState(null);
+  
+  // 메뉴 조회 모달 상태
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [viewingMenu, setViewingMenu] = useState(null);
 
   // 메뉴 목록 상태
   const [menuList, setMenuList] = useState([]);
@@ -67,17 +72,55 @@ function AdminMenuManage() {
     }
   };
 
+  // 특정 메뉴 상세 정보 조회 API
+  const fetchMenuDetail = async (menuId) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/admin/menu/${menuId}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const menuDetail = await response.json();
+      return menuDetail;
+    } catch (error) {
+      console.error('메뉴 상세 정보 조회 실패:', error);
+      throw error;
+    }
+  };
+
   // 메뉴 등록/수정 핸들러
   const handleMenuSubmit = async (menuData) => {
     try {
       if (editingMenu) {
-        // 수정 (나중에 PUT API 추가 시 구현)
+        // 메뉴 수정 - PATCH API 호출
+        const formData = new FormData();
+        formData.append("name", menuData.menuName);
+        formData.append("price", menuData.price);
+        formData.append("totalCount", menuData.tickets);
+        formData.append("category", menuData.category);
+        formData.append("visible", editingMenu.visible);
+        if (menuData.image) {
+          formData.append('image', menuData.image);
+        }
+
+        const response = await fetch(`${API_BASE_URL}/api/admin/menu/${editingMenu.id}`, {
+          method: 'PATCH',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const updatedMenu = await response.json();
+        
+        // 로컬 상태 업데이트
         setMenuList(prev => prev.map(menu => 
-          menu.id === editingMenu.id 
-            ? { ...menu, ...menuData, id: editingMenu.id, visible: menu.visible }
-            : menu
+          menu.id === editingMenu.id ? updatedMenu : menu
         ));
         setEditingMenu(null);
+        alert('메뉴가 성공적으로 수정되었습니다.');
       } else {
         // 신규 등록 - API 호출
         const formData = new FormData();
@@ -152,11 +195,52 @@ function AdminMenuManage() {
     setIsModalOpen(true);
   };
 
-  // visible 토글 핸들러
-  const handleToggleVisible = (id) => {
-    setMenuList(prev => prev.map(menu => 
-      menu.id === id ? { ...menu, visible: !menu.visible } : menu
-    ));
+  // visible 토글 핸들러 - 상세 정보 조회 후 수정
+  const handleToggleVisible = async (id) => {
+    try {
+      const menuDetail = await fetchMenuDetail(id);
+      
+      const formData = new FormData();
+      formData.append("name", menuDetail.name);
+      formData.append("price", menuDetail.price);
+      formData.append("totalCount", menuDetail.totalCount);
+      formData.append("category", menuDetail.category);
+      formData.append("visible", String(!menuDetail.visible));
+
+      const response = await fetch(`${API_BASE_URL}/api/admin/menu/${id}`, {
+        method: 'PATCH',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // 전체 메뉴 재조회
+      await fetchAdminMenus();
+      
+    } catch (error) {
+      console.error('표시상태 변경 실패:', error);
+      alert('표시상태 변경에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  // 메뉴 조회 핸들러
+  const handleView = async (menu) => {
+    try {
+      const menuDetail = await fetchMenuDetail(menu.id);
+      setViewingMenu(menuDetail);
+      setIsViewModalOpen(true);
+    } catch (error) {
+      console.error('메뉴 상세 정보 조회 실패:', error);
+      alert('메뉴 정보를 불러오는데 실패했습니다.');
+    }
+  };
+
+  // 메뉴 조회 모달 닫기 핸들러
+  const handleCloseViewModal = () => {
+    setIsViewModalOpen(false);
+    setViewingMenu(null);
   };
 
   // 뒤로가기 핸들러
@@ -195,6 +279,7 @@ function AdminMenuManage() {
                     <th>price</th>
                     <th>tickets</th>
                     <th>category</th>
+                    <th>조회</th>
                     <th>수정</th>
                     <th>삭제</th>
                   </tr>
@@ -214,6 +299,14 @@ function AdminMenuManage() {
                       <td>{menu.price.toLocaleString()}</td>
                       <td>{menu.soldTicket}</td>
                       <td>{menu.category}</td>
+                      <td>
+                        <button 
+                          className="admin-menu-view-btn"
+                          onClick={() => handleView(menu)}
+                        >
+                          👁️ 조회
+                        </button>
+                      </td>
                       <td>
                         <button 
                           className="admin-menu-edit-btn"
@@ -256,6 +349,13 @@ function AdminMenuManage() {
         onSubmit={handleMenuSubmit}
         initialData={editingMenu}
         categories={categories}
+      />
+      
+      {/* 메뉴 조회 모달 */}
+      <MenuViewModal
+        isOpen={isViewModalOpen}
+        onClose={handleCloseViewModal}
+        menuData={viewingMenu}
       />
     </>
   );
