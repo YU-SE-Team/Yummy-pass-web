@@ -24,6 +24,7 @@ function KioskMenuPage() {
   const [popularMenus, setPopularMenus] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [orderSummary, setOrderSummary] = useState({ totalAmount: 0, totalQuantity: 0 });
 
   const categoryDisplayNames = {
     'KOREAN': '한식',
@@ -72,6 +73,57 @@ function KioskMenuPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCategory, categories, store]);
+
+  // 주문 변경 시 서버에서 요약 계산
+  useEffect(() => {
+    const fetchOrderSummary = async () => {
+      if (order.length === 0) {
+        setOrderSummary({ totalAmount: 0, totalQuantity: 0 });
+        return;
+      }
+
+      try {
+        const orderData = {
+          items: order.map(item => ({
+            menuId: item.id,
+            quantity: item.quantity
+          }))
+        };
+
+        const response = await fetch(
+          `${API_BASE_URL}/api/orders/summary`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData)
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setOrderSummary({
+            totalAmount: data.totalAmount,
+            totalQuantity: data.totalQuantity
+          });
+        } else {
+          // 실패 시 프론트 계산 폴백
+          const totalAmount = order.reduce((sum, item) => sum + item.price * item.quantity, 0);
+          const totalQuantity = order.reduce((sum, item) => sum + item.quantity, 0);
+          setOrderSummary({ totalAmount, totalQuantity });
+        }
+      } catch (err) {
+        console.error('주문 요약 조회 오류:', err);
+        // 에러 시 프론트 계산 폴백
+        const totalAmount = order.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const totalQuantity = order.reduce((sum, item) => sum + item.quantity, 0);
+        setOrderSummary({ totalAmount, totalQuantity });
+      }
+    };
+
+    fetchOrderSummary();
+  }, [order]);
 
   // 카테고리 목록 및 인기 메뉴 조회
   const fetchCategoriesAndPopularMenus = async () => {
@@ -216,11 +268,40 @@ function KioskMenuPage() {
     setOrder([]);
   };
 
-  const handleCheckout = () => {
-    //결제 페이지로 이동
-    const currentCategoryEnum = categories[activeCategory];
-    const categoryName = categoryDisplayNames[currentCategoryEnum] || currentCategoryEnum || '일반';
-    navigate('/payment', { state: { order, store, categoryName } });
+  const handleCheckout = async () => {
+    if (order.length === 0) return;
+
+    try {
+      const orderData = {
+        items: order.map(item => ({
+          menuId: item.id,
+          quantity: item.quantity
+        }))
+      };
+
+      const response = await fetch(
+        `${API_BASE_URL}/api/orders/summary`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderData)
+        }
+      );
+
+      if (response.ok) {
+        const summary = await response.json();
+        const currentCategoryEnum = categories[activeCategory];
+        const categoryName = categoryDisplayNames[currentCategoryEnum] || currentCategoryEnum || '일반';
+        navigate('/payment', { state: { order, store, categoryName, summary } });
+      } else {
+        alert('재고가 부족하거나 오류가 발생했습니다.');
+      }
+    } catch (err) {
+      console.error('주문 확인 오류:', err);
+      alert('네트워크 오류가 발생했습니다.');
+    }
   };
 
   const handleModalClose = () => {
@@ -319,6 +400,8 @@ function KioskMenuPage() {
           onCancelOrder={handleCancelOrder}
           onCheckout={handleCheckout}
           onQuantityChange={handleQuantityChange}
+          totalAmount={orderSummary.totalAmount}
+          totalQuantity={orderSummary.totalQuantity}
         />
         
         <div className="kiosk-instruction">
