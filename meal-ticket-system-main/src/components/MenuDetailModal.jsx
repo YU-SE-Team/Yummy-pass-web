@@ -37,7 +37,7 @@ function MenuDetailModal({ menu, store, category, isOpen, onClose, onPurchase })
             <MenuChartSection />
             
             <MenuInfoCards 
-              remainingTickets={5}
+              remainingTickets={menu.remainingTickets || 0}
               price={menu.price}
             />
           </div>

@@ -74,6 +74,25 @@ function KioskMenuPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCategory, categories, store]);
 
+  // 페이지 재진입 시 메뉴 갱신 (결제 완료 후 돌아왔을 때 재고 반영)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && categories.length > 0 && store && store.restaurantId) {
+        const currentCategory = categories[activeCategory];
+        if (currentCategory) {
+          fetchMenusByCategory(store.restaurantId, currentCategory);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categories, activeCategory, store]);
+
   // 주문 변경 시 서버에서 요약 계산
   useEffect(() => {
     const fetchOrderSummary = async () => {
@@ -247,6 +266,14 @@ function KioskMenuPage() {
     //메뉴 추가
     setOrder(prevOrder => {
       const existingItem = prevOrder.find(item => item.id === menu.id);
+      const currentQuantity = existingItem ? existingItem.quantity : 0;
+      
+      // 재고 검증
+      if (menu.remainingTickets !== undefined && currentQuantity >= menu.remainingTickets) {
+        alert(`${menu.name}의 잔여 식권이 부족합니다. (남은 수량: ${menu.remainingTickets}장)`);
+        return prevOrder;
+      }
+      
       if (existingItem) {
         return prevOrder.map(item =>
           item.id === menu.id ? { ...item, quantity: item.quantity + 1 } : item
@@ -307,12 +334,26 @@ function KioskMenuPage() {
   const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedMenu(null);
+    // 모달 닫을 때 현재 카테고리 메뉴 다시 불러와서 재고 업데이트
+    if (categories.length > 0 && store && store.restaurantId) {
+      const currentCategory = categories[activeCategory];
+      if (currentCategory) {
+        fetchMenusByCategory(store.restaurantId, currentCategory);
+      }
+    }
   };
 
   const handleModalPurchase = (menu, store) => {
     handleAddToOrder(menu);
     setIsModalOpen(false);
     setSelectedMenu(null);
+    // 장바구니 추가 후 메뉴 목록 갱신
+    if (categories.length > 0 && store && store.restaurantId) {
+      const currentCategory = categories[activeCategory];
+      if (currentCategory) {
+        fetchMenusByCategory(store.restaurantId, currentCategory);
+      }
+    }
   };
 
   const handleQuantityChange = (itemId, change) => {
@@ -320,6 +361,13 @@ function KioskMenuPage() {
       const existingItem = prevOrder.find(item => item.id === itemId);
       if (existingItem) {
         const newQuantity = existingItem.quantity + change;
+        
+        // 증가 시 재고 검증
+        if (change > 0 && existingItem.remainingTickets !== undefined && newQuantity > existingItem.remainingTickets) {
+          alert(`${existingItem.name}의 잔여 식권이 부족합니다. (남은 수량: ${existingItem.remainingTickets}장)`);
+          return prevOrder;
+        }
+        
         if (newQuantity <= 0) {
           //수량 0이하면 주문에서 제거
           return prevOrder.filter(item => item.id !== itemId);
