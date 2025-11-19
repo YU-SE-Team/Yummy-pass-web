@@ -7,14 +7,10 @@ import React from "react";
  * @param {Function} props.onCancelOrder - 전체 취소 핸들러
  * @param {Function} props.onCheckout - 결제하기 핸들러
  * @param {Function} props.onQuantityChange - 수량 변경 핸들러
+ * @param {number} props.totalAmount - 총 금액 (서버 계산)
+ * @param {number} props.totalQuantity - 총 수량 (서버 계산)
  */
-function OrderSummary({ order, onCancelOrder, onCheckout, onQuantityChange }) {
-  // 주문 요약 계산
-  const totalAmount = order.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-  const totalQuantity = order.reduce((sum, item) => sum + item.quantity, 0);
+function OrderSummary({ order, onCancelOrder, onCheckout, onQuantityChange, totalAmount = 0, totalQuantity = 0 }) {
 
   // 수량 증가 핸들러
   const handleIncreaseQuantity = (itemId) => {

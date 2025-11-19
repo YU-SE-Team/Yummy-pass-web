@@ -1,74 +1,97 @@
-import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/ticketPurchase.css';
+import { API_BASE_URL } from '../api';  // ← 추가
 import 학생회관식당사진 from '../assets/images/학생회관식당 사진.png';
 import 자연계식당사진 from '../assets/images/자연계식당 사진.png';
 import 교직원식당사진 from '../assets/images/교직원식당 사진.png';
 
 function TicketPurchase() {
   const navigate = useNavigate();
+  const [stores, setStores] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  // 샘플 데이터
-  const stores = [
-    {
-      id: 'student-hall',
-      name: '학생회관 식당',
-      image: 학생회관식당사진,
-      categories: [
-        {
-          name: '한식',
-          menus: [
-            { id: 1, name: '돼지국밥', description: '진한 돼지고기 국물과 쫄깃한 면발', price: 6500 },
-            { id: 2, name: '김치볶음밥', description: '신선한 김치와 고슬고슬한 밥', price: 5500 }
-          ]
-        },
-        {
-          name: '중식',
-          menus: [
-            { id: 3, name: '짬뽕밥', description: '해산물이 가득한 매콤한 짬뽕', price: 7000 },
-            { id: 4, name: '짜장면', description: '진한 춘장 소스의 짜장면', price: 6000 }
-          ]
-        },
-        {
-          name: '일식',
-          menus: [
-            { id: 5, name: '돈까스', description: '바삭한 튀김옷의 돈까스', price: 6500 }
-          ]
+  // 이미지 매핑 (백엔드 응답의 name과 매칭)
+  const imageMap = {
+    '학생회관': 학생회관식당사진,
+    '자연계': 자연계식당사진,
+    '교직원': 교직원식당사진
+  };
+
+  useEffect(() => {
+    fetchRestaurants();
+  }, []);
+
+  const fetchRestaurants = async () => {
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/restaurants`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
         }
-      ]
-    },
-    {
-      id: 'natural-science',
-      name: '자연계 식당',
-      image: 자연계식당사진,
-      categories: [
-        {
-          name: '한식',
-          menus: [
-            { id: 6, name: '비빔밥', description: '다양한 나물과 고추장', price: 6000 }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'faculty',
-      name: '교직원 식당',
-      image: 교직원식당사진,
-      categories: [
-        {
-          name: '한식',
-          menus: [
-            { id: 7, name: '정식', description: '다양한 반찬이 있는 정식', price: 8000 }
-          ]
-        }
-      ]
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        // API 응답: [{ id: 1, name: "학생회관" }, ...]
+        const formattedStores = data.map(restaurant => ({
+          id: restaurant.id,  // 숫자 ID 사용
+          name: `${restaurant.name} 식당`,  // "학생회관 식당" 형태로 표시
+          image: imageMap[restaurant.name] || 학생회관식당사진,
+          restaurantId: restaurant.id  // 키오스크 페이지에서 메뉴 조회할 때 사용
+        }));
+
+        setStores(formattedStores);
+      } else if (response.status === 404) {
+        setError('등록된 식당 정보가 없습니다.');
+      } else {
+        setError('식당 목록을 불러오는데 실패했습니다.');
+      }
+    } catch (err) {
+      console.error('식당 목록 조회 오류:', err);
+      setError('네트워크 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
     }
-  ];
+  };
 
-        const handleStoreClick = (store) => {
-          navigate('/kiosk', { state: { store } });
-        };
+  const handleStoreClick = (store) => {
+    navigate('/kiosk', { state: { store } });
+  };
+
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <div className="ticket-purchase-container">
+          <h1 className="ticket-purchase-title">매장을 선택하세요.</h1>
+          <div style={{ textAlign: 'center', padding: '50px', color: '#666' }}>
+            로딩 중...
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Navbar />
+        <div className="ticket-purchase-container">
+          <h1 className="ticket-purchase-title">매장을 선택하세요.</h1>
+          <div style={{ textAlign: 'center', padding: '50px', color: '#ff4444' }}>
+            {error}
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

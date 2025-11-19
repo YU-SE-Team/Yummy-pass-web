@@ -1,19 +1,18 @@
+import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { API_BASE_URL } from '../api';
 import '../styles/paymentPage.css';
 
 function PaymentPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
   
-  // 전달받은 주문 정보와 매장 정보
-  const { order, store, menu } = location.state || {
-    order: [{ id: 1, name: '돼지국밥', price: 6500, quantity: 1 }],
-    store: { name: '학생회관 식당' },
-    menu: { id: 1, name: '돼지국밥', price: 6500 }
-  };
+  //정보
+  const { order, store, menu, categoryName } = location.state || {};
   
-  // 주문 총액 계산
+  //총액
   const totalAmount = order ? 
     order.reduce((sum, item) => sum + (item.price * item.quantity), 0) : 
     menu.price;
@@ -22,12 +21,68 @@ function PaymentPage() {
     order.reduce((sum, item) => sum + item.quantity, 0) : 
     1;
 
+
+  const userName = localStorage.getItem('userName') || '사용자';
+  const accessToken = localStorage.getItem('accessToken');
+  
+  const currentDate = new Date().toLocaleString('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
   const handleBack = () => {
     navigate('/kiosk', { state: { order, store } });
   };
 
-  const handlePurchase = () => {
-    navigate('/payment-complete', { state: { order, store, menu } });
+  const handlePurchase = async () => {
+    setIsLoading(true);
+
+    try {
+      // 주문 데이터 구성
+      const orderData = {
+        restaurantId: store.restaurantId,
+        items: order.map(item => ({
+          menuId: item.id,
+          quantity: item.quantity
+        })),
+        totalAmount: totalAmount,
+        paymentMethod: 'NAVER_PAY'
+      };
+
+      const response = await fetch(`${API_BASE_URL}/api/orders/checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': accessToken
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        // 성공 시 완료 페이지로 이동
+        navigate('/payment-complete', { 
+          state: { 
+            order, 
+            store, 
+            menu,
+            orderId: result.orderId,
+            tickets: result.tickets 
+          } 
+        });
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || '결제에 실패했습니다.');
+      }
+    } catch (err) {
+      console.error('결제 오류:', err);
+      alert('네트워크 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -46,11 +101,11 @@ function PaymentPage() {
               <div className="section-divider"></div>
               <div className="info-row">
                 <span className="info-label">이름</span>
-                <span className="info-value">김이박</span>
+                <span className="info-value">{userName}</span>
               </div>
               <div className="info-row">
                 <span className="info-label">날짜</span>
-                <span className="info-value">20XX년 00월 00시 00시 00분</span>
+                <span className="info-value">{currentDate}</span>
               </div>
             </div>
 
@@ -78,7 +133,7 @@ function PaymentPage() {
                   ))}
                   <div className="info-row">
                     <span className="info-label">수령 위치</span>
-                    <span className="info-value">{store.name} 00코너</span>
+                    <span className="info-value">{store.name} {categoryName}코너</span>
                   </div>
                 </>
               ) : (
@@ -93,7 +148,7 @@ function PaymentPage() {
                   </div>
                   <div className="info-row">
                     <span className="info-label">수령 위치</span>
-                    <span className="info-value">{store.name} 00코너</span>
+                    <span className="info-value">{store.name} {categoryName}코너</span>
                   </div>
                 </>
               )}
@@ -128,10 +183,14 @@ function PaymentPage() {
                 <span className="total-amount">{totalAmount.toLocaleString()}원</span>
               </div>
               <div className="summary-buttons">
-                <button className="summary-purchase-btn" onClick={handlePurchase}>
-                  구매하기
+                <button 
+                  className="summary-purchase-btn" 
+                  onClick={handlePurchase}
+                  disabled={isLoading}
+                >
+                  {isLoading ? '처리 중...' : '구매하기'}
                 </button>
-                <button className="summary-back-btn" onClick={handleBack}>
+                <button className="summary-back-btn" onClick={handleBack} disabled={isLoading}>
                   이전으로
                 </button>
               </div>
