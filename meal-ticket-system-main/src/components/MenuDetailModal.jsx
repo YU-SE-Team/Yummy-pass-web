@@ -34,7 +34,10 @@ function MenuDetailModal({ menu, store, category, isOpen, onClose, onPurchase })
           <h2 className="menu-detail-modal-name">{menu.name}</h2>
           
           <div className="menu-detail-modal-main">
-            <MenuChartSection />
+            <MenuChartSection
+              salesGraphData={menu.salesGraphData || []}
+              expectedWaitTime={menu.expectedWaitTime}
+            />
             
             <MenuInfoCards 
               remainingTickets={menu.remainingTickets || 0}

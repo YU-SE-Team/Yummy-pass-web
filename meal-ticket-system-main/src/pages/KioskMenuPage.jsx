@@ -61,6 +61,7 @@ function KioskMenuPage() {
     if (store && store.restaurantId) {
       fetchCategoriesAndPopularMenus();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store]);
 
   //카테고리 변경
@@ -152,13 +153,7 @@ function KioskMenuPage() {
     try {
       // 카테고리 목록 조회
       const categoriesResponse = await fetch(
-        `${API_BASE_URL}/api/admin/menu/categories/${store.restaurantId}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
+        `${API_BASE_URL}/api/admin/menu/categories/${store.restaurantId}`
       );
 
       if (categoriesResponse.ok) {
@@ -174,13 +169,7 @@ function KioskMenuPage() {
 
       // 인기 메뉴 조회
       const popularResponse = await fetch(
-        `${API_BASE_URL}/api/menus/sales-snapshots/restaurant/${store.restaurantId}/popular-menus`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
+        `${API_BASE_URL}/api/menus/sales-snapshots/restaurant/${store.restaurantId}/popular-menus`
       );
 
       if (popularResponse.ok) {
@@ -203,13 +192,7 @@ function KioskMenuPage() {
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/menus/${restaurantId}/${category}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
+        `${API_BASE_URL}/api/menus/${restaurantId}/${category}`
       );
 
       if (response.ok) {
@@ -237,24 +220,32 @@ function KioskMenuPage() {
 
   const handleMenuClick = async (menu) => {
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/api/menus/${menu.id}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
+      // 1. 메뉴 상세 정보
+      const detailResponse = await fetch(
+        `${API_BASE_URL}/api/menus/${menu.id}`
       );
 
-      if (response.ok) {
-        const detailData = await response.json();
-        setSelectedMenu({
-          ...menu,
-          remainingTickets: detailData.remainingTickets
-        });
-        setIsModalOpen(true);
-      }
+      // 2. 판매 그래프 데이터
+      const salesGraphResponse = await fetch(
+        `${API_BASE_URL}/api/menus/sales-snapshots/${menu.id}/today-sales-graph`
+      );
+
+      // 3. 예상 대기 시간
+      const waitTimeResponse = await fetch(
+        `${API_BASE_URL}/api/menus/sales-wait-time/${menu.id}`
+      );
+
+      const detailData = detailResponse.ok ? await detailResponse.json() : {};
+      const salesData = salesGraphResponse.ok ? await salesGraphResponse.json() : null;
+      const waitData = waitTimeResponse.ok ? await waitTimeResponse.json() : null;
+
+      setSelectedMenu({
+        ...menu,
+        remainingTickets: detailData.remainingTickets || 0,
+        salesGraphData: salesData?.salesDataPoints || [],
+        expectedWaitTime: waitData?.expectedWaitTime || null
+      });
+      setIsModalOpen(true);
     } catch (err) {
       console.error('메뉴 상세 조회 오류:', err);
       setSelectedMenu(menu);
