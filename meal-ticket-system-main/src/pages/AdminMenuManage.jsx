@@ -40,7 +40,10 @@ function AdminMenuManage() {
       }
       
       const menuData = await response.json();
-      setMenuList(menuData);
+      
+      // 현재 선택된 매장의 메뉴만 필터링
+      const filteredMenus = menuData.filter(menu => menu.restaurantName === store.name);
+      setMenuList(filteredMenus);
     } catch (error) {
       console.error('관리자 메뉴 조회 실패:', error);
       setError('메뉴를 불러오는데 실패했습니다.');
@@ -53,7 +56,7 @@ function AdminMenuManage() {
   useEffect(() => {
     fetchAdminMenus();
     fetchCategories();
-  }, []);
+  }, [store.name]); // store.name이 변경될 때마다 다시 조회
 
   // 카테고리 조회 API 호출
   const fetchCategories = async () => {
@@ -115,10 +118,12 @@ function AdminMenuManage() {
 
         const updatedMenu = await response.json();
         
-        // 로컬 상태 업데이트
-        setMenuList(prev => prev.map(menu => 
-          menu.id === editingMenu.id ? updatedMenu : menu
-        ));
+        // 현재 매장의 메뉴만 로컬 상태 업데이트
+        if (updatedMenu.restaurantName === store.name) {
+          setMenuList(prev => prev.map(menu => 
+            menu.id === editingMenu.id ? updatedMenu : menu
+          ));
+        }
         setEditingMenu(null);
         alert('메뉴가 성공적으로 수정되었습니다.');
       } else {
@@ -145,8 +150,11 @@ function AdminMenuManage() {
 
         const newMenu = await response.json();
         
-        // 로컬 상태 업데이트
-        setMenuList(prev => [...prev, newMenu]);
+        // 현재 매장의 메뉴인 경우에만 로컬 상태 업데이트
+        if (newMenu.restaurantName === store.name) {
+          setMenuList(prev => [...prev, newMenu]);
+        }
+        alert('메뉴가 성공적으로 등록되었습니다.');
       }
     } catch (error) {
       console.error('메뉴 등록/수정 실패:', error);
@@ -195,7 +203,7 @@ function AdminMenuManage() {
     setIsModalOpen(true);
   };
 
-  // visible 토글 핸들러 - 상세 정보 조회 후 수정
+  // 메뉴 표시상태 토글 핸들러
   const handleToggleVisible = async (id) => {
     try {
       const menuDetail = await fetchMenuDetail(id);
@@ -205,8 +213,8 @@ function AdminMenuManage() {
       formData.append("price", menuDetail.price);
       formData.append("totalCount", menuDetail.totalCount);
       formData.append("category", menuDetail.category);
-      formData.append("visible", String(!menuDetail.visible));
-
+      formData.append("visible", !menuDetail.visible);
+      
       const response = await fetch(`${API_BASE_URL}/api/admin/menu/${id}`, {
         method: 'PATCH',
         body: formData
@@ -216,12 +224,15 @@ function AdminMenuManage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // 전체 메뉴 재조회
+      const result = await response.json();
+
+      // 현재 매장의 메뉴 목록만 다시 조회
       await fetchAdminMenus();
+      alert('표시 상태가 변경되었습니다.');
       
     } catch (error) {
       console.error('표시상태 변경 실패:', error);
-      alert('표시상태 변경에 실패했습니다. 다시 시도해주세요.');
+      alert('표시상태 변경에 실패했습니다.');
     }
   };
 
@@ -267,7 +278,7 @@ function AdminMenuManage() {
             </div>
             
             {/* 로딩/에러 상태 */}
-            {loading && <div className="admin-menu-loading">메뉴를 불러오는 중</div>}
+            {loading && <div className="admin-menu-loading">메뉴를 불러오는 중...</div>}
             {error && <div className="admin-menu-error">{error}</div>}
             
             <div className="admin-menu-table-container">
@@ -285,46 +296,54 @@ function AdminMenuManage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {menuList.map(menu => (
-                    <tr key={menu.id}>
-                      <td>{menu.name}</td>
-                      <td>
-                        <button 
-                          className={`admin-menu-toggle-btn ${menu.visible ? 'visible' : 'hidden'}`}
-                          onClick={() => handleToggleVisible(menu.id)}
-                        >
-                          {menu.visible ? '표시중' : '숨김'}
-                        </button>
-                      </td>
-                      <td>{menu.price.toLocaleString()}</td>
-                      <td>{menu.soldTicket}</td>
-                      <td>{menu.category}</td>
-                      <td>
-                        <button 
-                          className="admin-menu-view-btn"
-                          onClick={() => handleView(menu)}
-                        >
-                          👁️ 조회
-                        </button>
-                      </td>
-                      <td>
-                        <button 
-                          className="admin-menu-edit-btn"
-                          onClick={() => handleEdit(menu)}
-                        >
-                          ✏️ 수정
-                        </button>
-                      </td>
-                      <td>
-                        <button 
-                          className="admin-menu-delete-btn"
-                          onClick={() => handleDelete(menu.id)}
-                        >
-                          🗑️
-                        </button>
+                  {menuList.length === 0 && !loading ? (
+                    <tr>
+                      <td colSpan="8" style={{ textAlign: 'center', padding: '20px' }}>
+                        등록된 메뉴가 없습니다.
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    menuList.map(menu => (
+                      <tr key={menu.id}>
+                        <td>{menu.name}</td>
+                        <td>
+                          <button 
+                            className={`admin-menu-toggle-btn ${menu.visible ? 'visible' : 'hidden'}`}
+                            onClick={() => handleToggleVisible(menu.id)}
+                          >
+                            {menu.visible ? '표시중' : '숨김'}
+                          </button>
+                        </td>
+                        <td>{menu.price.toLocaleString()}</td>
+                        <td>{menu.soldTicket}</td>
+                        <td>{menu.category}</td>
+                        <td>
+                          <button 
+                            className="admin-menu-view-btn"
+                            onClick={() => handleView(menu)}
+                          >
+                            👁️ 조회
+                          </button>
+                        </td>
+                        <td>
+                          <button 
+                            className="admin-menu-edit-btn"
+                            onClick={() => handleEdit(menu)}
+                          >
+                            ✏️ 수정
+                          </button>
+                        </td>
+                        <td>
+                          <button 
+                            className="admin-menu-delete-btn"
+                            onClick={() => handleDelete(menu.id)}
+                          >
+                            🗑️
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
