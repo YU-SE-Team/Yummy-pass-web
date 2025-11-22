@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/menuModal.css';
 
-function MenuModal({ isOpen, onClose, onSubmit, initialData = null }) {
+function MenuModal({ isOpen, onClose, onSubmit, initialData = null, categories = [] }) {
+  const CATEGORY_MAP = {
+    "돈가스": "PORK",
+    "스페셜": "SPECIAL",
+    "한식": "KOREAN",
+    "A": "A",
+    "C1": "C1",
+    "C2": "C2",
+    "D": "D",
+    "정식": "SET"
+  };
+
   // 폼 데이터 상태
   const [formData, setFormData] = useState({
     menuName: '',
@@ -13,9 +24,6 @@ function MenuModal({ isOpen, onClose, onSubmit, initialData = null }) {
 
   // 이미지 미리보기 상태
   const [imagePreview, setImagePreview] = useState(null);
-
-  // 카테고리 옵션
-  const categories = ['한식', '중식', '일식', '정식', '분식'];
 
   // 모달이 열릴 때 초기 데이터 설정
   useEffect(() => {
@@ -95,7 +103,7 @@ function MenuModal({ isOpen, onClose, onSubmit, initialData = null }) {
     e.preventDefault();
     if (formData.menuName && formData.price && formData.tickets && formData.category) {
       const menuData = {
-        name: formData.menuName,
+        menuName: formData.menuName,
         visible: true, // 기본값으로 true 설정
         price: parseInt(formData.price),
         tickets: parseInt(formData.tickets),
@@ -193,7 +201,7 @@ function MenuModal({ isOpen, onClose, onSubmit, initialData = null }) {
             >
               <option value="">카테고리를 선택하세요</option>
               {categories.map(category => (
-                <option key={category} value={category}>{category}</option>
+                <option key={category} value={CATEGORY_MAP[category]}>{category}</option>
               ))}
             </select>
           </div>

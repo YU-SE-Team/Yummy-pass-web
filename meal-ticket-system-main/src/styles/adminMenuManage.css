@@ -167,6 +167,23 @@ body, html, #root {
   background: #ff3742;
 }
 
+/* 조회 버튼 */
+.admin-menu-view-btn {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 2px solid #2196f3;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.admin-menu-view-btn:hover {
+  background: #2196f3;
+  color: #fff;
+}
+
 /* 수정 버튼 */
 .admin-menu-edit-btn {
   background: #f3f1ff;
