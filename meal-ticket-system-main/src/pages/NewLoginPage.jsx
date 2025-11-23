@@ -85,6 +85,20 @@ function NewLoginPage() {
     }
   };
 
+  const handleSocialRedirect = (provider) => {
+    const socialEndpoints = {
+      Google: '/oauth2/authorization/google',
+      Naver: '/oauth2/authorization/naver',
+      Kakao: '/oauth2/authorization/kakao'
+    };
+
+    const endpoint = socialEndpoints[provider];
+
+    if (endpoint) {
+      window.location.href = `${API_BASE_URL}${endpoint}`;
+    }
+  };
+
   const handleSignUp = () => {
     navigate('/sign-up');
   };
@@ -144,13 +158,7 @@ function NewLoginPage() {
             </div>
 
             {error && (
-              <div style={{ 
-                color: '#ff4444', 
-                fontSize: '14px', 
-                marginTop: '8px',
-                textAlign: 'center',
-                marginBottom: '8px'
-              }}>
+              <div className="login-error">
                 {error}
               </div>
             )}
@@ -169,15 +177,27 @@ function NewLoginPage() {
           </div>
 
           <div className="social-login">
-            <button className="social-btn google">
+            <button
+              className="social-btn google"
+              type="button"
+              onClick={() => handleSocialRedirect('Google')}
+            >
               <img className="social-logo" alt="Google" src={googleLogo} />
               <span className="social-text">Google로 시작하기</span>
             </button>
-            <button className="social-btn naver">
+            <button
+              className="social-btn naver"
+              type="button"
+              onClick={() => handleSocialRedirect('Naver')}
+            >
               <img className="social-logo" alt="Naver" src={naverLogo} />
               <span className="social-text">Naver로 시작하기</span>
             </button>
-            <button className="social-btn kakao">
+            <button
+              className="social-btn kakao"
+              type="button"
+              onClick={() => handleSocialRedirect('Kakao')}
+            >
               <img className="social-logo" alt="Kakao" src={kakaoLogo} />
               <span className="social-text">Kakao로 시작하기</span>
             </button>

@@ -305,3 +305,11 @@
     padding: 14px 0;
   }
 }
+
+/* 에러 메시지 스타일*/
+.signup2-error {
+  color: #ff4444;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
+}

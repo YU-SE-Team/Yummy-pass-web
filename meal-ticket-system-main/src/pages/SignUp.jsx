@@ -72,8 +72,10 @@ function SignUp() {
           phone: formData.phone
         })
       });
-      // 회원가입 성공
-      if (response.ok) {  
+
+      
+        // 회원가입 성공
+      if (response.ok) {
         alert('회원가입이 완료되었습니다.');
         navigate('/');
       } else {
@@ -91,14 +93,18 @@ function SignUp() {
   };
 
   const handleSocialLogin = (provider) => {
-    // 지금은 전화번호 입력 페이지로 이동
-    navigate('/social-signup-phone', { 
-      state: { 
-        provider: provider,
-        name: provider === 'Google' ? '김구글' : 
-              provider === 'Naver' ? '이네이버' : '박카카오'
-      } 
-    });
+    const socialEndpoints = {
+      Google: '/oauth2/authorization/google',
+      Naver: '/oauth2/authorization/naver',
+      Kakao: '/oauth2/authorization/kakao'
+    };
+
+    const endpoint = socialEndpoints[provider];
+
+    if (endpoint) {
+      window.location.href = `${API_BASE_URL}${endpoint}`;
+      return;
+    }
   };
 
   return (
@@ -151,12 +157,7 @@ function SignUp() {
             />
 
             {error && (
-              <div style={{ 
-                color: '#ff4444', 
-                fontSize: '14px', 
-                marginTop: '8px',
-                textAlign: 'center'
-              }}>
+              <div className="signup2-error">
                 {error}
               </div>
             )}
@@ -175,15 +176,27 @@ function SignUp() {
           </div>
 
           <div className="social-login">
-            <button className="social-btn google" onClick={() => handleSocialLogin('Google')}>
+            <button
+              className="social-btn google"
+              type="button"
+              onClick={() => handleSocialLogin('Google')}
+            >
               <img className="social-logo" alt="Google" src={googleLogo} />
               <span className="social-text">Google로 시작하기</span>
             </button>
-            <button className="social-btn naver" onClick={() => handleSocialLogin('Naver')}>
+            <button
+              className="social-btn naver"
+              type="button"
+              onClick={() => handleSocialLogin('Naver')}
+            >
               <img className="social-logo" alt="Naver" src={naverLogo} />
               <span className="social-text">Naver로 시작하기</span>
             </button>
-            <button className="social-btn kakao" onClick={() => handleSocialLogin('Kakao')}>
+            <button
+              className="social-btn kakao"
+              type="button"
+              onClick={() => handleSocialLogin('Kakao')}
+            >
               <img className="social-logo" alt="Kakao" src={kakaoLogo} />
               <span className="social-text">Kakao로 시작하기</span>
             </button>
