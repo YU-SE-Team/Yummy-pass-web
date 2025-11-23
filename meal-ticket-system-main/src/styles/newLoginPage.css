@@ -298,6 +298,15 @@ body, html, #root {
   white-space: nowrap;
 }
 
+/* 에러 메시지 스타일 */
+.login-error {
+  color: #ff4444;
+  font-size: 14px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
 .signup-link {
   text-align: center;
   color: #ffffff;

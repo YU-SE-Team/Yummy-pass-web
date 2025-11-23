@@ -122,6 +122,14 @@
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
 
+/* 에러 메시지 스타일 */
+.social-phone-error {
+  color: #ff4444;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
+}
+
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .social-phone-layout {
