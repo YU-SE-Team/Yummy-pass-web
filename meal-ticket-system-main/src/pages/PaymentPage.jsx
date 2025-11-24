@@ -10,7 +10,7 @@ function PaymentPage() {
   const [isLoading, setIsLoading] = useState(false);
   
   //정보
-  const { order, store, menu, categoryName } = location.state || {};
+  const { order, store, menu } = location.state || {};
   
   //총액
   const totalAmount = order ? 
@@ -121,6 +121,10 @@ function PaymentPage() {
                         <span className="info-value">{item.name}</span>
                       </div>
                       <div className="info-row">
+                        <span className="info-label">카테고리</span>
+                        <span className="info-value">{item.category || '일반'}코너</span>
+                      </div>
+                      <div className="info-row">
                         <span className="info-label">수량</span>
                         <span className="info-value">{item.quantity}개</span>
                       </div>
@@ -133,7 +137,7 @@ function PaymentPage() {
                   ))}
                   <div className="info-row">
                     <span className="info-label">수령 위치</span>
-                    <span className="info-value">{store.name} {categoryName}코너</span>
+                    <span className="info-value">{store.name}</span>
                   </div>
                 </>
               ) : (
@@ -143,12 +147,16 @@ function PaymentPage() {
                     <span className="info-value">{menu.name}</span>
                   </div>
                   <div className="info-row">
+                    <span className="info-label">카테고리</span>
+                    <span className="info-value">{menu.category || '일반'}코너</span>
+                  </div>
+                  <div className="info-row">
                     <span className="info-label">금액</span>
                     <span className="info-value">{menu.price.toLocaleString()}원</span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">수령 위치</span>
-                    <span className="info-value">{store.name} {categoryName}코너</span>
+                    <span className="info-value">{store.name}</span>
                   </div>
                 </>
               )}

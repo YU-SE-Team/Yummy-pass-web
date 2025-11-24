@@ -265,12 +265,15 @@ function KioskMenuPage() {
         return prevOrder;
       }
       
+      const currentCategoryEnum = categories[activeCategory];
+      const categoryName = categoryDisplayNames[currentCategoryEnum] || currentCategoryEnum || '일반';
+      
       if (existingItem) {
         return prevOrder.map(item =>
           item.id === menu.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      return [...prevOrder, { ...menu, quantity: 1 }];
+      return [...prevOrder, { ...menu, quantity: 1, category: categoryName }];
     });
   };
 
@@ -310,9 +313,7 @@ function KioskMenuPage() {
 
       if (response.ok) {
         const summary = await response.json();
-        const currentCategoryEnum = categories[activeCategory];
-        const categoryName = categoryDisplayNames[currentCategoryEnum] || currentCategoryEnum || '일반';
-        navigate('/payment', { state: { order, store, categoryName, summary } });
+        navigate('/payment', { state: { order, store, summary } });
       } else {
         alert('재고가 부족하거나 오류가 발생했습니다.');
       }
