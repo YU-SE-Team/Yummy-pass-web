@@ -20,6 +20,12 @@ function TicketPurchase() {
     '교직원': 교직원식당사진
   };
 
+  const descriptionMap = {
+    1: '학생회관에 위치한 식당입니다. 중앙도서관과 가깝습니다.',
+    2: '이종우 과학도서관 근처에 위치한 식당입니다.',
+    3: '교직원 식당입니다. 한 가지 메뉴만을 제공합니다.'
+  };
+
   useEffect(() => {
     fetchRestaurants();
   }, []);
@@ -44,7 +50,8 @@ function TicketPurchase() {
           id: restaurant.id,  // 숫자 ID 사용
           name: `${restaurant.name} 식당`,  // "학생회관 식당" 형태로 표시
           image: imageMap[restaurant.name] || 학생회관식당사진,
-          restaurantId: restaurant.id  // 키오스크 페이지에서 메뉴 조회할 때 사용
+          restaurantId: restaurant.id,  // 키오스크 페이지에서 메뉴 조회할 때 사용
+          description: descriptionMap[restaurant.id] || '맛있는 식사를 제공합니다.'  // 설명 추가
         }));
 
         setStores(formattedStores);
@@ -102,7 +109,10 @@ function TicketPurchase() {
           {stores.map((store) => (
             <div key={store.id} className="ticket-purchase-item" onClick={() => handleStoreClick(store)}>
               <img src={store.image} alt={store.name} className="ticket-purchase-img" />
-              <div className="ticket-purchase-label">{store.name}</div>
+              <div className="ticket-purchase-text">
+                <div className="ticket-purchase-label">{store.name}</div>
+                <div className="ticket-purchase-description">{store.description}</div>
+              </div>
             </div>
           ))}
         </div>

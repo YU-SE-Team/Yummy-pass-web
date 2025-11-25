@@ -66,10 +66,22 @@ body, html {
   flex-shrink: 0;
 }
 
+.ticket-purchase-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .ticket-purchase-label {
   font-size: 1.3rem;
   color: #1a1a1a;
   font-weight: 600;
+}
+
+.ticket-purchase-description {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.4;
 }
 
 .ticket-purchase-desc {
