@@ -21,6 +21,11 @@ function PaymentPage() {
     order.reduce((sum, item) => sum + item.quantity, 0) : 
     1;
 
+  // 최대 대기 시간 계산
+  const maxWaitTime = order && order.length > 0 ? 
+    Math.max(...order.map(item => item.expectedWaitTime || 0).filter(time => time > 0)) : 
+    0;
+
 
   const userName = localStorage.getItem('userName') || '사용자';
   const accessToken = localStorage.getItem('accessToken');
@@ -174,7 +179,11 @@ function PaymentPage() {
             </div>
 
             <div className="payment-notice">
-              실제 음식이 나오기까지는 시간이 00분 소요될 수 있습니다.
+              {maxWaitTime > 0 ? (
+                `실제 음식이 나오기까지는 시간이 약 ${maxWaitTime}분 소요될 수 있습니다.`
+              ) : (
+                '실제 음식이 나오기까지는 시간이 소요될 수 있습니다.'
+              )}
             </div>
           </div>  
 
@@ -183,8 +192,14 @@ function PaymentPage() {
               <h2 className="section-title">결제 금액</h2>
               <div className="section-divider"></div>
               <div className="summary-content">
-                <div className="summary-item">구매 금액</div>
-                <div className="summary-item">관련 정보</div>
+                <div className="summary-item">
+                  <span>상품 금액</span>
+                  <span>{totalAmount.toLocaleString()}원</span>
+                </div>
+                <div className="summary-item">
+                  <span>예상 대기</span>
+                  <span>{maxWaitTime > 0 ? `약 ${maxWaitTime}분` : '정보 없음'}</span>
+                </div>
               </div>
               <div className="summary-total">
                 <span className="total-count">총 {totalItems}건</span>
