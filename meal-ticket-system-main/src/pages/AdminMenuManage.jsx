@@ -285,12 +285,11 @@ function AdminMenuManage() {
               <table className="admin-menu-table">
                 <thead>
                   <tr>
-                    <th>menu</th>
+                    <th>메뉴명</th>
                     <th>표시상태</th>
-                    <th>price</th>
-                    <th>tickets</th>
-                    <th>category</th>
-                    <th>조회</th>
+                    <th>가격</th>
+                    <th>식권수</th>
+                    <th>카테고리</th>
                     <th>수정</th>
                     <th>삭제</th>
                   </tr>
@@ -298,14 +297,19 @@ function AdminMenuManage() {
                 <tbody>
                   {menuList.length === 0 && !loading ? (
                     <tr>
-                      <td colSpan="8" style={{ textAlign: 'center', padding: '20px' }}>
+                      <td colSpan="7" style={{ textAlign: 'center', padding: '20px' }}>
                         등록된 메뉴가 없습니다.
                       </td>
                     </tr>
                   ) : (
                     menuList.map(menu => (
                       <tr key={menu.id}>
-                        <td>{menu.name}</td>
+                        <td 
+                          style={{ cursor: 'pointer', color: '#6b5ace', textDecoration: 'underline' }}
+                          onClick={() => handleView(menu)}
+                        >
+                          {menu.name}
+                        </td>
                         <td>
                           <button 
                             className={`admin-menu-toggle-btn ${menu.visible ? 'visible' : 'hidden'}`}
@@ -317,14 +321,6 @@ function AdminMenuManage() {
                         <td>{menu.price.toLocaleString()}</td>
                         <td>{menu.soldTicket}</td>
                         <td>{menu.category}</td>
-                        <td>
-                          <button 
-                            className="admin-menu-view-btn"
-                            onClick={() => handleView(menu)}
-                          >
-                            👁️ 조회
-                          </button>
-                        </td>
                         <td>
                           <button 
                             className="admin-menu-edit-btn"

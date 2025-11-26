@@ -4,7 +4,7 @@ body, html, #root {
 
 .qr-code-container {
   max-width: 800px;
-  margin: 60px auto 0 auto;
+  margin: 0px auto 0 auto;
   padding: 40px 20px;
   min-height: 100vh;
   display: flex;

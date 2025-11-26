@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../styles/main.css';
-import logo from '../assets/images/로고.png';
+import logo from '../assets/images/yummy_png.png';
 import { API_BASE_URL } from '../api';
 
 // 상단 네비게이션 바

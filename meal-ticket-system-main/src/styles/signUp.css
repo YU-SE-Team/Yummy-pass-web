@@ -55,7 +55,7 @@
 
 .signup2-form-container::before {
   content: '';
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8fa4ff 0%, #a388d6 100%);
   border-radius: 50px;
   height: 100%;
   left: 0;
@@ -111,7 +111,7 @@
 
 .signup2-btn {
   width: 100%;
-  background: #4B5AE4;
+  background: #6574E8;
   color: white;
   border: none;
   padding: 14px;
@@ -124,7 +124,7 @@
 }
 
 .signup2-btn:hover {
-  background: #3a4ad4;
+  background: #5565D8;
 }
 
 .divider {

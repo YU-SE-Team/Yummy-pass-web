@@ -1,7 +1,7 @@
 /* 키오스크 메뉴 페이지 스타일 - 보라색 톤 */
 .kiosk-menu-container {
   max-width: 1000px;
-  margin: 40px auto 0 auto;
+  margin: 40px auto 40px auto;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
