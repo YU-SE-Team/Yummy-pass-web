@@ -1,24 +1,23 @@
 body, html {
-  background: #fafafa;
+  background: #ffffff;
   min-height: 100%;
 }
 
 #root {
-  background: #fafafa;
+  background: #ffffff;
   min-height: 100vh;
 }
 
 .ticket-purchase-container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 60px 20px 60px 20px;
+  padding: 40px 20px 60px 20px;
 }
 
 .ticket-purchase-title {
   font-size: 2.5rem;
   font-weight: 700;
   color: #1a1a1a;
-  margin-bottom: 16px;
   letter-spacing: -0.5px;
   text-align: center;
 }

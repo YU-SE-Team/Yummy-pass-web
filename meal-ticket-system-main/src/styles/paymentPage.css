@@ -1,12 +1,12 @@
 body, html, #root {
-  background: #fafafa;
+  background: #ffffff;
   min-height: 100vh;
 }
 
 .payment-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 60px 20px;
+  padding: 40px 20px;
 }
 
 .payment-header {
