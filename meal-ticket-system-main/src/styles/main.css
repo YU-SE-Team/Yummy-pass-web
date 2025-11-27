@@ -48,12 +48,14 @@ html {
   height: 70px;
   width: 100%;
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 30px auto;
   border-radius: 20px;
   
   /* 배경 색상 */
   background: #EBECFF;
 }
+
+
 
 .navbar__site-name {
   font-size: 2rem;
@@ -72,6 +74,7 @@ html {
   height: 45px;
   width: auto;
   object-fit: contain;
+  margin-top: 5px;
 }
 
 .navbar__menu {
@@ -95,18 +98,20 @@ html {
   font-weight: 500;
   font-size: 1rem;
   text-decoration: none;
-  transition: color 0.2s;
+  transition: all 0.3s ease;
+  filter: blur(0px);
 }
 
 .navbar__menu-link:hover {
   color: #2a4ad9;
-  text-decoration: underline;
+  text-decoration: none;
+  filter: blur(0.8px);
 }
 
 .navbar__menu-link.active {
   color: #2a4ad9;
   font-weight: 900;
-  text-decoration: underline;
+  
 }
 
 .navbar__logout {
