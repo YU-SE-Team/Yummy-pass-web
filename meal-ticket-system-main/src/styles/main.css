@@ -111,8 +111,7 @@ html {
 .navbar__menu-link.active {
   color: #2a4ad9;
   font-weight: 900;
-  
-}
+  }
 
 .navbar__logout {
   font-size: 0.9rem;

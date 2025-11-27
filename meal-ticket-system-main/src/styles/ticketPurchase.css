@@ -44,7 +44,8 @@ body, html {
 }
 
 .ticket-purchase-item:hover {
-  background: #f8f9fa;
+  background: #EBECFF;
+  transition: all 0.3s ease;
 }
 
 .ticket-purchase-item:first-child {
