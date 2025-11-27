@@ -72,10 +72,6 @@ body, html, #root {
   box-shadow: none;
 }
 
-.ticket-tab-btn:hover:not(.active) {
-  background: #e0e0e0;
-}
-
 .ticket-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, 350px);
