@@ -8,60 +8,50 @@ import { API_BASE_URL } from '../api';
 function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [userId, setUserId] = useState('');
+  const [userName, setUserName] = useState('');
   const [userRole, setUserRole] = useState('');
 
   useEffect(() => {
     // 컴포넌트 마운트 및 경로 변경 시 사용자 정보 업데이트
-    const storedUserId = localStorage.getItem('userId');
+    const storedUserName = localStorage.getItem('userName');
     const storedUserRole = localStorage.getItem('userRole');
-    setUserId(storedUserId || '');
+    setUserName(storedUserName || '');
     setUserRole(storedUserRole || '');
   }, [location.pathname]);
 
   const clearLocalStorage = () => {
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
     localStorage.removeItem('userName');
     localStorage.removeItem('userRole');
-    setUserId('');
+    setUserName('');
     setUserRole('');
     navigate('/');
   };
 
   const handleLogout = async () => {
+
     const token = localStorage.getItem('accessToken');
     
-    // 토큰이 없으면 바로 정리하고 이동
-    if (!token) {
-      clearLocalStorage();
-      return;
-    }
-
     try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
-        method: 'POST',
-        headers: {
-          'Authorization': token,
-          'Content-Type': 'application/json',
-        }
-      });
-
-      const data = await response.json();
-      // 로그아웃 성공
-      if (response.ok) {
-        // 정리
-        clearLocalStorage();
-      } else {
-        // 토큰이 유효하지 않아도 정리
-        console.error('로그아웃 오류:', data);
-        clearLocalStorage();
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
       }
+
+      await fetch(`${API_BASE_URL}/api/auth/logout`, {
+        method: 'POST',
+        headers: headers,
+        credentials: 'include'
+      });
     } catch (err) {
-      // 네트워크 오류에도 정리
-      console.error('로그아웃 네트워크 오류:', err);
-      clearLocalStorage();
+      
     }
+    
+    clearLocalStorage();
   };
 
   // 현재 경로가 해당 링크와 일치하는지 확인하는 함수
@@ -110,13 +100,13 @@ function Navbar() {
         {renderMenuByRole()}
       </ul>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        {userId && (
+        {userName && (
           <span style={{ 
             fontSize: '14px', 
             color: '#666',
             fontWeight: '500'
           }}>
-            {userId}
+            {userName}
           </span>
         )}
         <button className="navbar__logout" onClick={handleLogout}>로그아웃</button>
