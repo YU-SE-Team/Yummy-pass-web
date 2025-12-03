@@ -38,7 +38,7 @@ body, html, #root {
   position: absolute;
   top: 4px;
   left: 4px;
-  width: calc(50% - 6px);
+  width: calc(33.333% - 5.33px);
   height: calc(100% - 8px);
   background: #4b5ae4;
   border-radius: 26px;
@@ -48,7 +48,11 @@ body, html, #root {
 }
 
 .ticket-tab-slider.active-1::before {
-  transform: translateX(calc(100% + 8px));
+  transform: translateX(calc(100% + 6.67px));
+}
+
+.ticket-tab-slider.active-2::before {
+  transform: translateX(calc(200% + 13.33px));
 }
 
 .ticket-tab-btn {
@@ -92,6 +96,31 @@ body, html, #root {
   grid-column: 1 / -1;
 }
 
+.loading-message {
+  text-align: center;
+  padding: 50px;
+  color: #666;
+}
+
+.error-message-container {
+  text-align: center;
+  padding: 50px;
+  color: #ff4444;
+}
+
+.error-message-inline {
+  text-align: center;
+  padding: 20px;
+  color: #ff4444;
+}
+
+.ticket-qr-image {
+  width: 261px;
+  height: 261px;
+  border-radius: 16px;
+  object-fit: contain;
+}
+
 .ticket-item {
   background: #fff;
   border: 1px solid #bcd2ee;
@@ -106,6 +135,7 @@ body, html, #root {
   align-items: center; 
   justify-content: center; 
   margin: 0 0 16px 0; 
+  border-radius: 16px;
 }
 .ticket-card-qr .ticket-qr-placeholder { 
   width: 150px; 
@@ -115,9 +145,12 @@ body, html, #root {
   display: flex; 
   align-items: center; 
   justify-content: center; 
-  font-weight: 800; 
+  font-weight: 700; 
   color: #1e40af; 
-  font-size: 1.5rem; 
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 10px;
+  line-height: 1.4;
 }
 .ticket-item-table { 
   margin-top: 0; 
@@ -186,4 +219,34 @@ body, html, #root {
   font-size: 3rem;
   color: #555;
   margin-top: 40px;
+}
+
+/* 수령 확인 버튼 */
+.ticket-receive-btn {
+  width: 100%;
+  padding: 16px;
+  margin-top: 16px;
+  background: #4b5ae4;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ticket-receive-btn:hover:not(:disabled) {
+  background: #3d4bc7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(75, 90, 228, 0.3);
+}
+
+.ticket-receive-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.ticket-receive-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
