@@ -22,7 +22,7 @@ function Navbar() {
   const clearLocalStorage = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('userName');
-    localStorage.removeItem('userName');
+    localStorage.removeItem('userId');
     localStorage.removeItem('userRole');
     setUserName('');
     setUserRole('');
