@@ -69,9 +69,9 @@ function MenuModal({ isOpen, onClose, onSubmit, initialData = null, categories =
         return;
       }
       
-      // 파일 크기 검증 (10MB 제한)
-      if (file.size > 10 * 1024 * 1024) {
-        alert('파일 크기는 10MB 이하여야 합니다.');
+      // 파일 크기 검증 (100MB 제한)
+      if (file.size > 100 * 1024 * 1024) {
+        alert('파일 크기는 100MB 이하여야 합니다.');
         return;
       }
 
