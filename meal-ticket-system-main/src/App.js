@@ -4,7 +4,6 @@ import './styles/main.css';
 import Navbar from './components/Navbar';
 import NewLoginPage from './pages/NewLoginPage';
 import TicketPurchase from './pages/TicketPurchase';
-import MenuDetailPage from './pages/MenuDetailPage';
 import PaymentPage from './pages/PaymentPage';
 import PaymentCompletePage from './pages/PaymentCompletePage';
 import MyTicketPage from './pages/MyTicketPage';
@@ -12,6 +11,7 @@ import AdminPage from './pages/AdminPage';
 import AdminMenuManage from './pages/AdminMenuManage';
 import QRCodePage from './pages/QRCodePage';
 import SignUp from './pages/SignUp';
+import SocialSignUpPhone from './pages/SocialSignUpPhone';
 import KioskMenuPage from './pages/KioskMenuPage';
 
 function App() {
@@ -21,7 +21,6 @@ function App() {
         <Routes>
           <Route path="/" element={<NewLoginPage />} />
           <Route path="/ticket-purchase" element={<TicketPurchase />} />
-          <Route path="/menu-detail" element={<MenuDetailPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/payment-complete" element={<PaymentCompletePage />} />
           <Route path="/my-ticket" element={<MyTicketPage />} />
@@ -29,6 +28,7 @@ function App() {
           <Route path="/admin-menu-manage" element={<AdminMenuManage />} />
           <Route path="/qr-code" element={<QRCodePage />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/social-signup-phone" element={<SocialSignUpPhone />} />
           <Route path="/kiosk" element={<KioskMenuPage />} />
         </Routes>
       </div>
