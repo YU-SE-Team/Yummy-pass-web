@@ -351,9 +351,6 @@ function AdminMenuManage() {
           <button className="admin-menu-back-btn" onClick={handleBack}>
             이전으로
           </button>
-          <button className="admin-menu-confirm-btn" onClick={() => alert('변경사항이 저장되었습니다!')}>
-            완료
-          </button>
         </div>
       </div>
 
