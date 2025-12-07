@@ -55,9 +55,18 @@ function MenuChartSection({ salesGraphData, expectedWaitTime }) {
     }
   }
   
+  // 15분 구간별 판매량 집계 (5분 데이터 3개 합산)
   const recentData = [];
-  for (let i = closestIndex; i >= 0 && recentData.length < 8; i -= 15) {
-    recentData.unshift(salesGraphData[i]);
+  for (let i = closestIndex; i >= 0 && recentData.length < 8; i -= 3) {
+    let intervalSum = 0;
+    // 3개 구간 합산 (5분 × 3 = 15분)
+    for (let j = 0; j < 3 && (i - j) >= 0; j++) {
+      intervalSum += salesGraphData[i - j].salesInInterval;
+    }
+    recentData.unshift({
+      time: salesGraphData[i].time,
+      salesInInterval: intervalSum
+    });
   }
   const filteredData = recentData;
 
@@ -72,8 +81,8 @@ function MenuChartSection({ salesGraphData, expectedWaitTime }) {
     }),
     datasets: [
       {
-        label: '누적 판매',
-        data: filteredData.map(point => point.cumulativeAtPoint),
+        label: '15분 구간 판매',
+        data: filteredData.map(point => point.salesInInterval),
         backgroundColor: '#6b5ace',
         borderColor: '#5a4ab8',
         borderWidth: 1,
