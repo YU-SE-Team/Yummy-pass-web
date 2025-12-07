@@ -173,6 +173,7 @@ function MenuModal({ isOpen, onClose, onSubmit, initialData = null, categories =
               onChange={handleInputChange}
               placeholder="가격을 입력하세요."
               className="menu-modal-form-input"
+              min="1"
               required
             />
           </div>
@@ -186,6 +187,7 @@ function MenuModal({ isOpen, onClose, onSubmit, initialData = null, categories =
               onChange={handleInputChange}
               placeholder="식권 매수를 입력하세요."
               className="menu-modal-form-input"
+              min="1"
               required
             />
           </div>
