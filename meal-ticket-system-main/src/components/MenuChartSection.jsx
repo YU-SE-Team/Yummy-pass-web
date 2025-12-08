@@ -43,11 +43,7 @@ function MenuChartSection({ salesGraphData, expectedWaitTime }) {
   let minDiff = Infinity;
   
   for (let i = salesGraphData.length - 1; i >= 0; i--) {
-    const dataTime = new Date(
-      salesGraphData[i].time.includes('Z') 
-        ? salesGraphData[i].time 
-        : salesGraphData[i].time + 'Z'
-    );
+    const dataTime = new Date(salesGraphData[i].time);
     const diff = Math.abs(targetTime - dataTime);
     if (diff < minDiff) {
       minDiff = diff;
@@ -55,25 +51,32 @@ function MenuChartSection({ salesGraphData, expectedWaitTime }) {
     }
   }
   
+  // 15분 구간별 판매량 집계 (5분 데이터 3개 합산)
   const recentData = [];
-  for (let i = closestIndex; i >= 0 && recentData.length < 8; i -= 15) {
-    recentData.unshift(salesGraphData[i]);
+  for (let i = closestIndex; i >= 2 && recentData.length < 8; i -= 3) {
+    let intervalSum = 0;
+    intervalSum = salesGraphData[i].salesInInterval + 
+                  salesGraphData[i - 1].salesInInterval + 
+                  salesGraphData[i - 2].salesInInterval;
+    
+    recentData.unshift({
+      time: salesGraphData[i].time,
+      salesInInterval: intervalSum
+    });
   }
   const filteredData = recentData;
 
   const chartData = {
     labels: filteredData.map(point => {
-      //UTC 시간을 KST로 변환하여 HH:MM 형식으로 표시, 명시적 Z 추가
-      const utcTime = point.time.includes('Z') ? point.time : point.time + 'Z';
-      const date = new Date(utcTime);
+      const date = new Date(point.time);
       const hours = String(date.getHours()).padStart(2, '0');
       const minutes = String(date.getMinutes()).padStart(2, '0');
       return `${hours}:${minutes}`;
     }),
     datasets: [
       {
-        label: '누적 판매',
-        data: filteredData.map(point => point.cumulativeAtPoint),
+        label: '15분 구간 판매',
+        data: filteredData.map(point => point.salesInInterval),
         backgroundColor: '#6b5ace',
         borderColor: '#5a4ab8',
         borderWidth: 1,
