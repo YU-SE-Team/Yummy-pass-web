@@ -252,10 +252,7 @@
   }
   
   .signup2-left {
-    width: 100%;
-    max-width: none;
-    height: 200px;
-    order: 2;
+    display: none; /* 모바일에서 로고 영역 숨김 */
   }
   
   .signup2-logo-text {
