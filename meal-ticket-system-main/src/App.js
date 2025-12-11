@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './styles/main.css';
-import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 import NewLoginPage from './pages/NewLoginPage';
 import TicketPurchase from './pages/TicketPurchase';
 import PaymentPage from './pages/PaymentPage';
@@ -20,16 +20,20 @@ function App() {
       <div className="app-container">
         <Routes>
           <Route path="/" element={<NewLoginPage />} />
-          <Route path="/ticket-purchase" element={<TicketPurchase />} />
-          <Route path="/payment" element={<PaymentPage />} />
-          <Route path="/payment-complete" element={<PaymentCompletePage />} />
-          <Route path="/my-ticket" element={<MyTicketPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/admin-menu-manage" element={<AdminMenuManage />} />
-          <Route path="/qr-code" element={<QRCodePage />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/social-signup-phone" element={<SocialSignUpPhone />} />
-          <Route path="/kiosk" element={<KioskMenuPage />} />
+          
+          {/* 학생 전용 페이지 */}
+          <Route path="/kiosk" element={<ProtectedRoute allowedRoles={['STUDENT']}><KioskMenuPage /></ProtectedRoute>} />
+          <Route path="/ticket-purchase" element={<ProtectedRoute allowedRoles={['STUDENT']}><TicketPurchase /></ProtectedRoute>} />
+          <Route path="/payment" element={<ProtectedRoute allowedRoles={['STUDENT']}><PaymentPage /></ProtectedRoute>} />
+          <Route path="/payment-complete" element={<ProtectedRoute allowedRoles={['STUDENT']}><PaymentCompletePage /></ProtectedRoute>} />
+          <Route path="/my-ticket" element={<ProtectedRoute allowedRoles={['STUDENT']}><MyTicketPage /></ProtectedRoute>} />
+          
+          {/* 관리자 전용 페이지 */}
+          <Route path="/admin" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminPage /></ProtectedRoute>} />
+          <Route path="/admin-menu-manage" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminMenuManage /></ProtectedRoute>} />
+          <Route path="/qr-code" element={<ProtectedRoute allowedRoles={['ADMIN']}><QRCodePage /></ProtectedRoute>} />
         </Routes>
       </div>
     </Router>
